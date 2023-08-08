@@ -1,0 +1,57 @@
+.page-header.pb-3.mb-3
+  nav aria-label="breadcrumb" 
+    ol.breadcrumb
+      li.breadcrumb-item
+        = link_to 'Головна', admin_root_path
+      li.breadcrumb-item.active aria-current="page" Автори
+  .add-link
+    = link_to new_admin_author_path, class: 'btn btn-lg btn-round btn-primary m-0'
+      i.bx.bx-plus
+      |Додати
+
+- if @authors.present?
+  .row
+    .col-lg-12
+      .pb-3.mb-3
+        .bg-white.rounded-xl.shadow-sm.px-4.py-5.p-md-5
+          .header-with-action.d-flex.justify-content-between.align-items-center
+            .header-name-page
+              h5.font-weight-700.section-title-4.text-left.pb-2.mb-4 
+                |Автори
+                .title-divider-round.mt-3
+          .row
+            .col-12
+              table.table.table-striped
+                thead
+                  tr
+                    th scope="col"  #
+                    th scope="col"  Фото
+                    th scope="col"  Ім'я
+                    th scope="col"  К-сть картин
+                    th scope="col" 
+                tbody
+                  - @authors.each do |author|
+                    tr
+                      th.align-middle scope="row" = @author_all.index(author) + 1
+                      td.align-middle 
+                        - if author.image.present?
+                          = image_tag author.image.url(:xs), class: 'img-table'
+                      td.align-middle 
+                        = link_to author.name, admin_author_path(author)
+                      td.align-middle 
+                        = author.items.count
+                      td.align-middle 
+                        = link_to admin_author_path(author)
+                          i.bx.bx-show
+                        = link_to [:admin, author],  method: :delete, data: { confirm: 'Удалить?' }
+                          i.bx.bx-trash-alt.ml-3
+            
+            .col-12.d-flex.justify-content-center
+              = paginate @authors
+
+- else
+  .row
+    .col-lg-12
+      .pb-3.mb-3
+        .bg-white.rounded-xl.shadow-sm.px-4.py-5.p-md-5
+          .no-date.d-flex.justify-content-center Дані відсутні

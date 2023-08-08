@@ -1,0 +1,50 @@
+.site-wrapper-reveal.border-bottom
+  .blog-page-wrapper.section-space--pt_120.section-space--pb_120
+    .container
+      .row
+        .col-lg-9.col-md-8
+          .row
+            .col-lg-12
+              .single-blog-item
+                .blog-thumbnail-box
+                  .thumbnail
+                    = image_tag @post.image.url(:lg), class: 'img-fluid', alt: @post.name
+                .blog-contents
+                  h3.blog-title-lg
+                    = @post.name
+                  .meta-tag-box
+                    .meta.date
+                      span = @post.created_at.try(:strftime, '%d.%m.%Y')
+                  p.mt-20.d_text = @post.text.try(:html_safe)
+                  .row.align-items-center
+                    .col-lg-12
+                      .blog-post-social-networks.mt-20
+                        h6.title = t :share
+                        ul.list
+                          #share
+
+        .col-lg-3.col-md-4
+          - if @posts.count >= 2
+            .blog-widget.widget-blog-recent-post.mt-40
+              h6.mb-20 = t :recent_news
+              ul.widget-nav-list
+                - @posts.each do |post|
+                  li
+                    = link_to post_path(post)
+                      = truncate_markup post.name, 60
+                      span.post-date =< post.created_at.try(:strftime, '%d.%m.%Y')
+          - if @item_categories.present?
+            .blog-widget.widget-blog-categories.mt-40
+              h6.mb-20 = t :paintings_categories
+              ul.widget-nav-list
+                li
+                  = link_to item_categories_path
+                    = t :all_paintings
+                - @item_categories.each do |item_category|
+                  li
+                    = link_to item_category_path(item_category)
+                      = item_category.name
+
+
+
+

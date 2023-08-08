@@ -1,0 +1,33 @@
+.breadcrumb-area.section-space--pt_120
+  .container
+    .row
+      .col-12
+        .row.breadcrumb_box.align-items-center
+          .col-lg-6.col-md-6.col-sm-6.text-center.text-sm-left
+            h2.breadcrumb-title = t :change_password
+          .col-lg-6.col-md-6.col-sm-6
+            ul.breadcrumb-list.text-center.text-sm-right
+              li.breadcrumb-item
+                = link_to "#{t 'home_page'}", root_path
+              li.breadcrumb-item.active = t :change_password
+
+
+.site-wrapper-reveal.border-bottom
+  .my-account-page-warpper.section-space--ptb_120
+    .container
+      .row
+        .col-lg-6.col-md-7.ml-auto.mr-auto
+          .myaccount-box-wrapper
+            .helendo-tabs
+              ul.nav role="tablist" 
+                li.tab__item.nav-item.active
+                  a.nav-link.active data-toggle="tab" href="#tab_list_06" role="tab" = t :change_password
+            .tab-content.content-modal-box
+              #tab_list_06.tab-pane.fade.show.active role="tabpanel" 
+                = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: 'account-form-box' }) do |f|
+                  = devise_error_messages!
+                  h6 = t :change_password
+                  .single-input
+                    = f.email_field :email, placeholder: 'Email', required: 'required'
+                  .button-box.mt-25
+                    = f.button "#{t 'send'}", class: 'btn btn--full btn--black'

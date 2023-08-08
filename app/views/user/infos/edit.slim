@@ -1,0 +1,63 @@
+= form_for current_user, url: user_infos_path do |f|
+  .breadcrumb-area.section-space--pt_120
+    .container
+      .row
+        .col-12
+          .row.breadcrumb_box.align-items-center
+            .col-lg-6.col-md-6.col-sm-6.text-center.text-sm-left
+              h2.breadcrumb-title = t :edit_my_account
+            .col-lg-6.col-md-6.col-sm-6
+              ul.breadcrumb-list.text-center.text-sm-right
+                li.breadcrumb-item
+                  = link_to "#{t 'home_page'}", root_path
+                li.breadcrumb-item
+                  = link_to "#{t 'my_account'}", user_root_path
+                li.breadcrumb-item.active = t :edit_my_account
+
+
+  .site-wrapper-reveal.border-bottom
+    .coming-soon-area.section-space--ptb_120
+      .container
+        .row
+          .col-lg-3
+            ul.user-menu
+              li class="#{'active' if params[:controller] == 'user/infos'}"
+                = link_to "#{t 'my_account'}", user_root_path
+              li class="#{'active' if params[:controller] == 'user/orders'}"
+                = link_to user_orders_path
+                  = t :my_orders
+                  =< ['(', current_user.orders.count, ')'].join('')
+              li
+                = link_to "#{t 'log_out'}", destroy_user_session_path
+          .col-lg-9
+            table.table.table-striped
+              tbody
+                tr
+                  th 
+                    = t :name
+                    |:
+                  td 
+                    = f.text_field :name, placeholder: "#{t 'name'}", class: 'user-input'
+                tr
+                  th
+                    = t :surname
+                    |:
+                  td 
+                    = f.text_field :surname, placeholder: "#{t 'surname'}", class: 'user-input'
+                tr
+                  th Email:
+                  td 
+                    = f.email_field :email, placeholder: 'Email', class: 'user-input'
+                tr
+                  th
+                    = t :phone
+                    |:
+                  td 
+                    = f.text_field :phone, placeholder: "#{t 'phone'}", class: 'user-input'
+                tr
+                  th 
+                    = t :date_of_create
+                    |:
+                  td = current_user.created_at.strftime('%d.%m.%Y')
+            .d-flex.justify-content-center.mt-5
+              = f.submit "#{t 'save'}", class: 'btn btn--black text-center btn--md'

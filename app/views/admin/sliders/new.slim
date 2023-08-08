@@ -1,0 +1,11 @@
+nav.pb-3.mb-3 aria-label="breadcrumb" 
+  ol.breadcrumb
+    li.breadcrumb-item
+      = link_to 'Головна', admin_root_path
+    li.breadcrumb-item
+      = link_to 'Наповнення сторінок', admin_page_content_path
+    li.breadcrumb-item
+      = link_to 'Слайди', admin_sliders_path
+    li.breadcrumb-item.active aria-current="page" Новий слайд
+
+= render 'form'

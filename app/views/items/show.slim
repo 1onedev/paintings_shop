@@ -1,0 +1,206 @@
+.breadcrumb-area.section-space--pt_120
+  .container
+    .row
+      .col-12
+        .row.breadcrumb_box.align-items-center
+          .col-lg-6.col-md-6.col-sm-6.text-center.text-sm-left
+            h2.breadcrumb-title = @item.name
+          .col-lg-6.col-md-6.col-sm-6
+            ul.breadcrumb-list.text-center.text-sm-right
+              li.breadcrumb-item
+                = link_to "#{t 'home_page'}", root_path
+              li.breadcrumb-item
+                = link_to "#{t 'all_paintings'}", item_categories_path
+              li.breadcrumb-item
+                = link_to @item.item_category.name, item_category_path(@item.item_category)
+              li.breadcrumb-item.active = @item.name
+
+.site-wrapper-reveal
+  .single-product-wrap.section-space--pt_90.border-bottom
+    .container
+      .row
+        .col-lg-7.col-md-6.col-sm-12.col-xs-12
+          #carouselExampleIndicators.carousel.carousel-shop.slide.d-none.d-md-block
+            .row
+              .col-2
+                ol.carousel-indicators
+                  - @item.images.each do |image|
+                    li data-slide-to="#{@item.images.index(image)}" data-target="#carouselExampleIndicators" class="#{'active' if @item.images.first == image}"
+                      = image_tag image.file.url(:lg), class: 'img-fluid', alt: @item.name
+              .col-10
+                .carousel-inner
+                  - @item.images.each do |image|
+                    .carousel-item class="#{'active' if @item.images.first == image}"
+                      = image_tag image.file.url(:zoom), class: 'img-fluid', alt: @item.name, data: {:toggle => "modal", :target =>"#imagemodal"}
+          #carouselExampleIndicators2.carousel.carousel-shop.slide.d-block.d-md-none
+            .row
+              .col-12
+                .carousel-inner
+                  - @item.images.each do |image|
+                    .carousel-item class="#{'active' if @item.images.first == image}"
+                      = image_tag image.file.url(:zoom), class: 'img-fluid', alt: @item.name, data: {:toggle => "modal", :target =>"#imagemodal"}
+              .col-12
+                ol.carousel-indicators.mobile
+                  - @item.images.each do |image|
+                    li data-slide-to="#{@item.images.index(image)}" data-target="#carouselExampleIndicators2" class="#{'active' if @item.images.first == image}"
+                      = image_tag image.file.url(:lg), class: 'img-fluid', alt: @item.name
+
+        .col-lg-5.col-md-6.col-sm-12.col-xs-12
+          .product-details-content
+            h5.font-weight--reguler.mb-10 = @item.name
+            h3.price = price_format @item.price
+            - if @item.sold?
+              .stock.out-of-stock.mt-10
+                p
+                  = t :aviliability
+                  |:
+                  span =< (t 'enums.sold')
+            - else
+              .stock.in-stock.mt-10
+                p
+                  = t :aviliability
+                  |:
+                  span =< (t 'enums.not_sold')
+            .stock.mt-10
+              p
+                = t :paintings_material
+                |:
+                span =< @item.item_material.name
+            .quickview-action-wrap.mt-30
+              .quickview-cart-box
+                .quickview-button
+                  - unless @item.sold?
+                    .quickview-cart.button
+                      = link_to "#{t 'add_to_cart'}", ajax_cart_url(item: @item), remote: true, method: :post, class: 'btn--lg btn--black font-weight--reguler text-white'
+                  .quickview-wishlist.button
+                    = link_to ajax_favorites_url(favorite: @item), remote: true, method: :post
+                      i.icon-heart
+            .product_meta.mt-30
+              .posted_in.item_meta
+                span.label
+                  = t :author
+                  |:
+                =< link_to @item.author.name, author_path(@item.author)
+              .posted_in.item_meta
+                span.label 
+                  = t :category
+                  |:
+                =< link_to @item.item_category.name, item_category_path(@item.item_category)
+            .product_socials.section-space--mt_60
+              span.label
+                = t :share
+                |:
+              ul.helendo-social-share.socials-inline
+                #share
+      .row
+        .col-12
+          .product-details-tab.section-space--pt_90
+            ul.nav role="tablist" 
+              li.active role="presentation" 
+                a.active data-toggle="tab" href="#description" role="tab" = t :description
+              / - if @item.commenting?
+              /   li role="presentation" 
+              /     a data-toggle="tab" href="#comments" role="tab" = t :comments
+        .col-12
+          .product_details_tab_content.tab-content.mt-30
+            #description.product_tab_content.tab-pane.active role="tabpanel" 
+              .product_description_wrap
+                = @item.description.try(:html_safe)
+
+            / #comments.product_tab_content.tab-pane role="tabpanel" 
+            /   - @comments.each do |comment|
+            /     .rating_wrap.mb-30
+            /       h4.rating-title-2 = comment.text
+            /       p = comment.name
+            /       p = comment.created_at.try(:strftime, '%d.%m.%Y')
+              
+            /   .comments-area.comments-reply-area
+            /     .row
+            /       .col-lg-12
+            /         = form_for Comment.new, remote: true, html: { id: 'new_comment', class: 'comment-form-area' } do |f|
+            /           p.comment-form-comment
+            /             label = t :comment
+            /             = f.text_area :text, class: 'comment-notes', placeholder: "#{t 'comment'}", required: 'required'
+            /           .comment-input
+            /             p.comment-form-author
+            /               label
+            /                 = t :name
+            /                 span.required *
+            /               = f.text_field :name, placeholder: "#{t 'name'}", required: 'required'
+            /             p.comment-form-email
+            /               label
+            /                 | Email
+            /                 span.required *
+            /               = f.email_field :email, placeholder: 'Email', required: 'required'
+            /           .comment-form-submit
+            /             = f.submit "#{t 'add'}", class: 'comment-submit'
+
+      .related-products.section-space--ptb_90
+        .row
+          .col-lg-12
+            .section-title.text-center.mb-30
+              h4 = t :similari_paintings
+        .row.product-slider-active
+          - if @similar_items.present?
+            - @similar_items.each do |similar_item|
+              .col-lg-12
+                .single-product-item.text-center
+                  .products-images
+                    = link_to item_category_item_path(item_category_id: similar_item.item.item_category.id, id: similar_item.item.id), class: 'product-thumbnail'
+                      = image_tag similar_item.item.images.first.file.url(:lg), class: 'img-fluid', alt: similar_item.item.name
+                      = availabilities_tag(similar_item.item)
+                    .product-actions
+                      - unless similar_item.item.sold?
+                        = link_to ajax_cart_url(item: similar_item.item), remote: true, method: :post
+                          i.p-icon.icon-bag2
+                      = link_to ajax_favorites_url(favorite: similar_item.item), remote: true, method: :post
+                        i.p-icon.icon-heart
+                  .product-content
+                    h6.prodect-title
+                      = link_to similar_item.item.name, item_category_item_path(item_category_id: similar_item.item.item_category.id, id: similar_item.item.id)
+                    .prodect-price.mb-2
+                      span.material-name = similar_item.item.item_material.name
+                    .prodect-price
+                      span.new-price = price_format similar_item.item.price
+          - else
+            - @similar_item_null.each do |item|
+              .col-lg-12
+                .single-product-item.text-center
+                  .products-images
+                    = link_to item_category_item_path(item_category_id: item.item_category.id, id: item.id), class: 'product-thumbnail'
+                      = image_tag item.images.first.file.url(:lg), class: 'img-fluid', alt: item.name
+                      = availabilities_tag(item)
+                    .product-actions
+                      - unless item.sold?
+                        = link_to ajax_cart_url(item: item), remote: true, method: :post
+                          i.p-icon.icon-bag2
+                      = link_to ajax_favorites_url(favorite: item), remote: true, method: :post
+                        i.p-icon.icon-heart
+                  .product-content
+                    h6.prodect-title
+                      = link_to item.name, item_category_item_path(item_category_id: item.item_category.id, id: item.id)
+                    .prodect-price.mb-2
+                      span.material-name = item.item_material.name
+                    .prodect-price
+                      span.new-price = price_format item.price
+
+
+#imagemodal.modal.fade aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" 
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close data-dismiss="modal" type="button" 
+          span aria-hidden="true"  &times;
+          span.sr-only Close
+      .modal-body
+        #carouselExampleControls.carousel.slide
+          .carousel-inner
+            - @item.images.each do |image|
+              .carousel-item class="#{'active' if @item.images.first == image}"
+                = image_tag image.file.url(:zoom), class: 'img-fluid', alt: @item.name
+          button.carousel-control-prev data-slide="prev" data-target="#carouselExampleControls" type="button" 
+            span.carousel-control-prev-icon aria-hidden="true" 
+            span.sr-only Previous
+          button.carousel-control-next data-slide="next" data-target="#carouselExampleControls" type="button" 
+            span.carousel-control-next-icon aria-hidden="true" 
+            span.sr-only Next

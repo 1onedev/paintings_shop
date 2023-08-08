@@ -1,0 +1,99 @@
+.breadcrumb-area.section-space--pt_120
+  .container
+    .row
+      .col-12
+        .row.breadcrumb_box.align-items-center
+          .col-lg-6.col-md-6.col-sm-6.text-center.text-sm-left
+            h2.breadcrumb-title
+              => t :orders_page 
+              = @order.number_with_sign
+          .col-lg-6.col-md-6.col-sm-6
+            ul.breadcrumb-list.text-center.text-sm-right
+              li.breadcrumb-item
+                = link_to "#{t 'home_page'}", root_path
+              li.breadcrumb-item
+                = link_to "#{t 'my_account'}", user_root_path
+              li.breadcrumb-item
+                = link_to "#{t 'my_orders'}", user_orders_path
+              li.breadcrumb-item.active 
+                => t :orders_page 
+                = @order.number_with_sign
+
+
+.site-wrapper-reveal.border-bottom
+  .coming-soon-area.section-space--ptb_120
+    .container
+      .row
+        .col-lg-3
+          ul.user-menu
+            li class="#{'active' if params[:controller] == 'user/infos'}"
+              = link_to "#{t 'my_account'}", user_root_path
+            li class="#{'active' if params[:controller] == 'user/orders'}"
+              = link_to user_orders_path
+                = t :my_orders
+                =< ['(', current_user.orders.count, ')'].join('')
+            li
+              = link_to "#{t 'log_out'}", destroy_user_session_path
+        .col-lg-9
+          .your-order-wrappwer.tablet-mt__60.small-mt__60
+            .your-order-area
+              .your-order-wrap.gray-bg-4
+                .your-order-info-wrap
+                  .your-main-order-info
+                    ul
+                      li.d-flex.justify-content-between
+                        div
+                          = @order.number_with_sign
+                        div
+                          = @order.created_at.try(:strftime, '%d.%m.%Y')
+                  .your-order-info.order-total
+                    ul
+                      li
+                        strong = t :total
+                        span = price_format(@order.total_price)
+                  .order-user-info
+                    ul
+                      li.d-flex.justify-content-between.pb-2
+                        strong = t :name
+                        span = [@order.surname, @order.name].join(' ')
+                      li.d-flex.justify-content-between.pb-2
+                        strong = t :email
+                        span = @order.email
+                      li.d-flex.justify-content-between.pb-2
+                        strong = t :phone
+                        span = @order.phone
+                      li.d-flex.justify-content-between.pb-2
+                        strong = t :locality
+                        span = @order.locality
+                      li.d-flex.justify-content-between.pb-2
+                        strong = t :delivery_service
+                        span = [@order.delivery_service, @order.delivery_type].join(', ')
+                      li
+                        strong = t :delivery_comment
+                      li
+                        span = @order.delivery_comment
+          table.table.table-striped.mt-5
+            thead
+              tr
+                th
+                th
+                th = t :item_name
+                th = t :item_price
+                th = t :count
+                th = t :final_price
+            tbody
+              - @order.order_items.each_with_index do |order_item, index|
+                tr
+                  td.align-middle
+                    strong = index + 1
+                  td.align-middle
+                    = link_to item_category_item_path(item_category_id: order_item.item.item_category.id, id: order_item.item.id)
+                      .pro-img.cart_img
+                        = image_tag order_item.item.images.first.file.url(:xs), class: 'img-fluid', style: 'width:40px;height:auto;'
+                  td.align-middle
+                    strong
+                      = link_to order_item.item.name, item_category_item_path(item_category_id: order_item.item.item_category.id, id: order_item.item.id)
+                  td.align-middle = price_format(order_item.item.price)
+                  td.align-middle 1 шт.
+                  td.align-middle = price_format(order_item.price)
+      

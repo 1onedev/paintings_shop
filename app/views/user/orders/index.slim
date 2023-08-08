@@ -1,0 +1,58 @@
+.breadcrumb-area.section-space--pt_120
+  .container
+    .row
+      .col-12
+        .row.breadcrumb_box.align-items-center
+          .col-lg-6.col-md-6.col-sm-6.text-center.text-sm-left
+            h2.breadcrumb-title = t :my_orders
+          .col-lg-6.col-md-6.col-sm-6
+            ul.breadcrumb-list.text-center.text-sm-right
+              li.breadcrumb-item
+                = link_to "#{t 'home_page'}", root_path
+              li.breadcrumb-item
+                = link_to "#{t 'my_account'}", user_root_path
+              li.breadcrumb-item.active = t :my_orders
+
+
+.site-wrapper-reveal.border-bottom
+  .coming-soon-area.section-space--ptb_120
+    .container
+      .row
+        .col-lg-3
+          ul.user-menu
+            li class="#{'active' if params[:controller] == 'user/infos'}"
+              = link_to "#{t 'my_account'}", user_root_path
+            li class="#{'active' if params[:controller] == 'user/orders'}"
+              = link_to user_orders_path
+                = t :my_orders
+                =< ['(', current_user.orders.count, ')'].join('')
+            li
+              = link_to "#{t 'log_out'}", destroy_user_session_path
+        .col-lg-9
+          table.table.table-striped
+            tbody
+              thead
+                tr
+                  th = t :order_number
+                  th = t :date_of_order
+                  th = t :item_name
+                  th = t :total_price_item
+                  th 
+              tbody
+                - @orders.each do |order|
+                  tr
+                    td.align-middle
+                      strong  = link_to order.number_with_sign, user_order_path(order)
+                    td.align-middle = order.created_at.try(:strftime, '%d.%m.%Y %H:%M')
+                    td.align-middle
+                      - order.order_items.each do |order_item| 
+                        => order_item.item.name
+                        |(x 1)
+                        br
+                    td.align-middle = price_format(order.total_price)
+                    td.align-middle
+                      = link_to "#{t 'more'}", user_order_path(order), class: 'btn--black text-center btn--sm'
+          .paginatoin-area
+            .row       
+              .col-lg-12
+                = paginate @orders, theme: 'my_custom_theme'

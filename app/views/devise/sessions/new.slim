@@ -1,0 +1,63 @@
+.breadcrumb-area.section-space--pt_120
+  .container
+    .row
+      .col-12
+        .row.breadcrumb_box.align-items-center
+          .col-lg-6.col-md-6.col-sm-6.text-center.text-sm-left
+            h2.breadcrumb-title = t :sign_in
+          .col-lg-6.col-md-6.col-sm-6
+            ul.breadcrumb-list.text-center.text-sm-right
+              li.breadcrumb-item
+                = link_to "#{t 'home_page'}", root_path
+              li.breadcrumb-item.active = t :sign_in
+
+
+.site-wrapper-reveal.border-bottom
+  .my-account-page-warpper.section-space--ptb_120
+    .container
+      .row
+        .col-lg-6.col-md-7.ml-auto.mr-auto
+          .myaccount-box-wrapper
+            .helendo-tabs
+              ul.nav role="tablist" 
+                li.tab__item.nav-item.active
+                  a.nav-link.active data-toggle="tab" href="#tab_list_06" role="tab" = t :sign_in_name
+                li.tab__item.nav-item
+                  a.nav-link data-toggle="tab" href="#tab_list_07" role="tab" = t :sign_up
+            .tab-content.content-modal-box
+              #tab_list_06.tab-pane.fade.show.active role="tabpanel" 
+                = form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: 'account-form-box' }) do |f|
+                  = devise_error_messages!
+                  h6 = t :sign_in_name
+                  .single-input
+                    = f.email_field :email, placeholder: 'Email', required: 'required'
+                  .single-input
+                    = f.password_field :password, placeholder: "#{t 'password'}", required: 'required'
+                  .checkbox-wrap.mt-10
+                    label.label-for-checkbox.inline.mt-15
+                      = f.check_box :remember_me, class: 'input-checkbox', id: 'rememberme'
+                      span = t :remember_me
+                    = link_to "#{t 'lost_password_que'}", new_password_path(resource_name), class: 'mt-10'
+                  .button-box.mt-25
+                    = f.button "#{t 'sign_in_name'}", class: 'btn btn--full btn--black'
+
+
+
+              #tab_list_07.tab-pane.fade role="tabpanel" 
+                = form_for(resource, as: resource_name, url: registration_path(resource_name), html: {class: 'account-form-box' }) do |f|
+                  h6 = t :sign_up
+                  .single-input
+                    = f.text_field :name, placeholder: "#{t 'name'}", required: 'required'
+                  .single-input
+                    = f.text_field :surname, placeholder: "#{t 'surname'}", required: 'required'
+                  .single-input
+                    = f.email_field :email, placeholder: 'Email', required: 'required'
+                  .single-input
+                    = f.text_field :phone, placeholder: "#{t 'phone'}", required: 'required'
+                  .single-input
+                    = f.password_field :password, placeholder: "#{t 'password'}", required: 'required'
+                  p.mt-15
+                    = t :privacy_policy_devise_text
+                    = link_to "#{t 'privacy_policy_devise'}", root_path, class: 'privacy-policy-link'
+                  .button-box.mt-25
+                    = f.button "#{t 'to_sign_up'}", class: 'btn btn--full btn--black'

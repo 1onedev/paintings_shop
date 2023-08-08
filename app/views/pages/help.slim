@@ -1,0 +1,43 @@
+.breadcrumb-area.section-space--pt_120
+  .container
+    .row
+      .col-12
+        .row.breadcrumb_box.align-items-center
+          .col-lg-6.col-md-6.col-sm-6.text-center.text-sm-left
+            h2.breadcrumb-title = t :help
+          .col-lg-6.col-md-6.col-sm-6
+            ul.breadcrumb-list.text-center.text-sm-right
+              li.breadcrumb-item
+                = link_to "#{t 'home_page'}", root_path
+              li.breadcrumb-item.active = t :help
+
+.site-wrapper-reveal.border-bottom
+  .coming-soon-area.section-space--ptb_120
+    .container
+      .row
+        .col-lg-6
+          .coming-soon-content
+            h1.mb-20 
+              => t :you_can
+              span = t :help_page_help
+            p There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don’t slightly believable.
+            .help-widget.mt-5
+              .row.mb-3.pb-3
+                .col-4.d-flex.align-items-center
+                  = image_tag settings.logo.url, alt: "#{settings.market_name}", style: 'width:85%;height:auto'
+                .col-8
+                  a#donate10.btn--black.btn--sm.text-center.mr-2 10$
+                  a#donate50.btn--black.btn--sm.text-center.mr-2 50$
+                  a#donateOtherSum.btn--black.btn--sm.text-center = t :other_sum
+              .row
+                #donateHelpButtonBlock.col-6.offset-3.d-flex.justify-content-center
+                  a#donateHelpButton.btn--black.text-center.btn--full.btn--md
+                    = t :to_help
+                    i.far.fa-long-arrow-right.ml-2
+                #donateInputBlock.col-10.offset-1.justify-content-center.d-none
+                  input.donate type="number" name="donate" id="donateInput"
+                  a#donateSubmit.btn--black.text-center.btn--md
+                    = t :to_help
+                    i.far.fa-long-arrow-right.ml-2
+        .col-lg-6
+          = image_tag 'im-md-1-780x770.jpg', class: 'img-fluid'

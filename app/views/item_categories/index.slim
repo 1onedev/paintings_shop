@@ -1,0 +1,116 @@
+.breadcrumb-area.section-space--pt_120
+  .container
+    .row
+      .col-12
+        .row.breadcrumb_box.align-items-center
+          .col-lg-6.col-md-6.col-sm-6.text-center.text-sm-left
+            h2.breadcrumb-title 
+              - if params[:q].present?
+                = t :search 
+                |"
+                = params[:q]
+                |"
+              - else
+                = t :all_paintings
+          .col-lg-6.col-md-6.col-sm-6
+            ul.breadcrumb-list.text-center.text-sm-right
+              li.breadcrumb-item
+                = link_to "#{t 'home_page'}", root_path
+              li.breadcrumb-item.active
+                - if params[:q].present?
+                  = t :search 
+                  |"
+                  = params[:q]
+                  |"
+                - else
+                  = t :all_paintings
+                  
+.site-wrapper-reveal.border-bottom
+  .product-wrapper.section-space--ptb_120
+    .container
+      .row
+        .col-lg-6.col-md-6
+          .shop-toolbar__items.shop-toolbar__item--left
+            .shop-toolbar__item.shop-toolbar__item--result
+              - if @items.present?
+                = page_entries_info(@items)
+              - else
+                = t :item_nil_count
+            .shop-toolbar__item.shop-short-by
+              ul
+                li
+                  a href="#" 
+                    = t :sort_by
+                    i.fa.fa-angle-down.angle-down
+                  ul
+                    li class="#{'active' if params[:sorting].blank?}"
+                      = link_to "#{t 'default_sorting'}", item_categories_path
+                    li class="#{'active' if params[:sorting] == 'price-asc'}"
+                      = link_to "#{t 'price_to_high_sorting'}", item_categories_path(sorting: 'price-asc')
+                    li class="#{'active' if params[:sorting] == 'price-desc'}"
+                      = link_to "#{t 'price_to_low_sorting'}", item_categories_path(sorting: 'price-desc')
+                    li class="#{'active' if params[:sorting] == 'name-asc'}"
+                      = link_to "#{t 'name_to_high_sorting'}", item_categories_path(sorting: 'name-asc')
+                    li class="#{'active' if params[:sorting] == 'name-desc'}"
+                      = link_to "#{t 'name_to_low_sorting'}", item_categories_path(sorting: 'name-desc')
+
+        .col-lg-6.col-md-6
+          .shop-toolbar__items.shop-toolbar__item--right
+            .shop-toolbar__items-wrapper
+              .shop-toolbar__item.shop-toolbar__item--filter
+                a.shop-filter-active href="#" 
+                  = t :filter
+                  i.icon-plus
+      .product-filter-wrapper
+        .row
+          .mb-20.col__20
+            .product-filter
+              h5 = t :select_category
+              ul.widget-nav-list
+                li class="#{'active' unless @item_category.present?}"
+                  = link_to "#{t 'all_paintings'}", item_categories_path
+                - @item_categories.each do |item_category|
+                  li class="#{'active' if @item_category.present? && item_category == @item_category}"
+                    = link_to item_category.name, item_category_path(item_category)
+
+          .mb-20.col__20
+            .product-filter
+              h5 = t :select_material
+              ul.widget-nav-list
+                li class="#{'active' unless params[:material].present?}"
+                  = link_to "#{t 'all_paintings'}", item_categories_path
+                - @item_materials.each do |item_material|
+                  li class="#{'active' if params[:item_material].present? && params[:item_material] == item_material}"
+                    = link_to item_categories_path(item_material: item_material)
+                      = item_material.name
+      
+      .row
+        - if @items.present?
+          - @items.each do |item|
+            .col-lg-3.col-md-4.col-sm-6
+              .single-product-item.text-center
+                .products-images
+                  = link_to item_category_item_path(item_category_id: item.item_category.id, id: item.id), class: 'product-thumbnail'
+                    = image_tag item.images.first.file.url(:lg), class: 'img-fluid', alt: item.name
+                    = availabilities_tag(item)
+                  .product-actions
+                    - unless item.sold?
+                      = link_to ajax_cart_url(item: item), remote: true, method: :post
+                        i.p-icon.icon-bag2
+                    = link_to ajax_favorites_url(favorite: item), remote: true, method: :post
+                      i.p-icon.icon-heart
+                .product-content
+                  h6.prodect-title
+                    = link_to item.name, item_category_item_path(item_category_id: item.item_category.id, id: item.id)
+                  .prodect-price.mb-2
+                    span.material-name = item.item_material.name
+                  .prodect-price
+                    span.new-price = price_format item.price
+        - else
+          .col-12
+            .item-nil = t :item_nil
+       
+      .paginatoin-area
+        .row       
+          .col-lg-12
+            = paginate @items, theme: 'my_custom_theme'

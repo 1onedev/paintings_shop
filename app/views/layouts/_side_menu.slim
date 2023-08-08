@@ -1,0 +1,71 @@
+#mobile-menu-overlay.mobile-menu-overlay
+  .mobile-menu-overlay__inner
+    .mobile-menu-close-box.text-left
+      span#mobile-menu-close-trigger.mobile-navigation-close-icon
+        i.icon-cross2
+    .mobile-menu-overlay__body
+      .offcanvas-menu-header
+        .helendo-language-currency.row-flex.row.section-space--mb_60
+          .widget-language.col-md-6
+            h6 = t :localization
+            ul
+              li class="#{'actived' if I18n.locale == :uk}"
+                = link_to "#{t 'ukrainian'}", ({:locale => :uk})
+              li class="#{'actived' if I18n.locale == :en}"
+                = link_to "#{t 'english'}", ({:locale => :en})
+      nav.offcanvas-navigation
+        ul
+          li class="#{'current' if params[:controller] == 'home'}"
+            = link_to "#{t 'home_page'}", root_path, class: 'li-item'
+          li.has-children class="#{'current' if params[:controller].in?(%w[item_categories items])}"
+            = link_to "#{t 'paintings_page'}", item_categories_path, class: 'li-item'
+            ul.sub-menu
+              li class="#{'current-child' if params[:controller] == 'item_categories#index'}"
+                = link_to item_categories_path, class: 'li-item-child'
+                  span = t :all_paintings
+              - item_categories.each do |item_category|
+                li class="#{'current-child' if @item_category.present? && item_category.id == @item_category.id}"
+                  = link_to item_category_path(item_category), class: 'li-item-child'
+                    span = item_category.name
+          li class="#{'current' if params[:action] == 'help'}"
+            = link_to "#{t 'help'}", help_path, class: 'li-item'
+          li class="#{'current' if params[:controller] == 'posts'}"
+            = link_to "#{t 'news_page'}", posts_path, class: 'li-item'
+          li.has-children class="#{'current' if params[:action].in?(%w[about_us contact_us])}"
+            = link_to "#{t 'abouts_page'}", about_us_path, class: 'li-item'
+            ul.sub-menu
+              li class="#{'current-child' if params[:action] == 'about_us'}"
+                = link_to about_us_path, class: 'li-item-child'
+                  span = t :abouts_page
+              li class="#{'current-child' if params[:action] == 'contact_us'}"
+                = link_to contact_us_path, class: 'li-item-child'
+                  span = t :contacts
+          li.d-flex.d-md-none class="#{'current' if params[:controller] == 'wishlists'}"
+            = link_to wishlist_path, class: 'li-item d-flex align-items-center'
+              i.fas.fa-heart.mr-1
+              = t :wishlist_page
+          - unless current_user.present?
+            li.d-block.d-md-none class="#{'current' if params[:action] == 'help'}"
+              = link_to new_user_session_path, class: 'li-item d-flex align-items-center'
+                i.fas.fa-user-circle.mr-1
+                = t :sign_in
+      - unless settings.time_work.blank? || settings.phones.blank?
+        .mobile-menu-contact-info.section-space--mt_60
+          h6 = t :contact_with_us
+          p
+            = settings.time_work
+            br
+            = settings.phones.split(',').first
+      - unless settings.social_links.blank?
+        .mobile-menu-social-share.section-space--mt_60
+          h6 = t :follow_us
+          ul.social-share
+            li
+              = link_to settings.social_links.split(',').first, target: '_blank'
+                i.fab.fa-facebook
+            li
+              = link_to settings.social_links.split(',').second, target: '_blank'
+                i.fab.fa-twitter
+            li
+              = link_to settings.social_links.split(',').third, target: '_blank'
+                i.fab.fa-instagram

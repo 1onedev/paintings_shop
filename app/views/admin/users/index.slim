@@ -1,0 +1,50 @@
+nav.pb-3.mb-3 aria-label="breadcrumb" 
+  ol.breadcrumb
+    li.breadcrumb-item
+      = link_to 'Головна', admin_root_path
+    li.breadcrumb-item.active aria-current="page" Користувачі
+
+- if @users.present?
+  .row
+    .col-lg-12
+      .pb-3.mb-3
+        .bg-white.rounded-xl.shadow-sm.px-4.py-5.p-md-5
+          .header-with-action.d-flex.justify-content-between.align-items-center
+            .header-name-page
+              h5.font-weight-700.section-title-4.text-left.pb-2.mb-4 
+                |Користувачі
+                .title-divider-round.mt-3
+          .row
+            .col-12
+              table.table.table-striped
+                thead
+                  tr
+                    th scope="col"  #
+                    th scope="col"  Ім'я
+                    th scope="col"  Пошта
+                    th scope="col"  Номер телефону
+                    th scope="col"  Кі-сть замовлень
+                    th scope="col" 
+                tbody
+                  - @users.each do |user|
+                    tr
+                      th.align-middle scope="row" = @user_all.index(user) + 1
+                      td.align-middle = link_to user.full_name, admin_user_path(user)
+                      td.align-middle = user.email
+                      td.align-middle = user.phone
+                      td.align-middle = user.orders.count
+                      td.align-middle 
+                        = link_to admin_user_path(user)
+                          i.bx.bx-show
+                        = link_to [:admin, user],  method: :delete, data: { confirm: 'Удалить?' }
+                          i.bx.bx-trash-alt.ml-3
+          
+            .col-12.d-flex.justify-content-center
+              = paginate @users
+
+- else
+  .row
+    .col-lg-12
+      .pb-3.mb-3
+        .bg-white.rounded-xl.shadow-sm.px-4.py-5.p-md-5
+          .no-date.d-flex.justify-content-center Дані відсутні

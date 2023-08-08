@@ -1,0 +1,148 @@
+doctype html
+html lang="uk" 
+  head
+    meta charset="utf-8"
+    meta content="IE=edge" http-equiv="X-UA-Compatible" 
+    meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" 
+    = csrf_meta_tags
+    = csp_meta_tag
+    = display_meta_tags
+    = stylesheet_link_tag 'application', media: 'all'
+
+    link rel="icon" sizes="32x32" type="image/png" href='/favicon/favicon-32x32.png' 
+    link rel="icon" sizes="16x16" type="image/png" href='/favicon/favicon-16x16.png'
+    link rel="icon" sizes="192x192" type="image/png" href='/favicon/android-chrome-192x192.png'
+    link rel="icon" sizes="512x512" type="image/png" href='/favicon/android-chrome-512x512.png'
+    link rel="apple-touch-icon" sizes="180x180" href='/favicon/apple-touch-icon.png'
+    link rel="icon" href="/favicon/favicon.ico"
+
+  body
+    /! Notification
+    = render 'layouts/alert'
+    .header-area.header-area--default
+      header.header-area.header_absolute.header_height-90.header-sticky
+        .container
+          .row.align-items-center
+            .col-lg-4.col-md-4.d-none.d-md-block
+              .header-left-search
+                = form_tag({:controller => "/item_categories", action: :index}, method: :get, class: 'header-search-box') do
+                  = text_field_tag :q, params[:q], class: 'search-field', placeholder: "#{t 'search'}"
+                  = button_to nil, class: 'search-icon'
+                    i.icon-magnifier
+            .col-lg-4.col-md-4.col-6
+              .logo.text-md-center
+                = link_to root_path
+                  = image_tag settings.logo.url, alt: "#{settings.market_name}", style: 'width:180px;height:auto;'
+            .col-lg-4.col-md-4.col-6
+              .header-right-side.text-right
+                .header-right-items.d-none.d-md-block class="#{'active' if params[:action] == 'my_account' or params[:controller] == 'sessions'}"
+                  - if current_user.present?
+                    = link_to user_root_path
+                      i.icon-user
+                  - else
+                    = link_to new_user_session_path
+                      i.icon-user
+                .header-right-items.d-none.d-md-block
+                  = link_to wishlist_path, class: 'header-cart'
+                    i.icon-heart
+                    span.item-counter#favorite_size 
+                      = favorite_items.count
+                .header-right-items
+                  a.header-cart.minicart-btn.toolbar-btn.header-icon href="#miniCart" 
+                    i.icon-bag2
+                    span.item-counter#cart_size
+                      = cart_items.count
+                  #miniCart.offcanvas-minicart_wrapper
+                    .offcanvas-menu-inner
+                      .close-btn-box
+                        a.btn-close href="#" 
+                          i.icon-cross2
+                      #cart_list
+                        = render 'shared/cart_items'
+                .header-right-items.d-block.d-md-none
+                  a#search-overlay-trigger.search-icon href="javascript:void(0)" 
+                    i.icon-magnifier
+                .header-right-items
+                  a#mobile-menu-trigger.mobile-navigation-icon href="#" 
+                    i.icon-menu
+
+    = yield
+
+    .footer-area-wrapper.bg-white
+      .footer-area.section-space--ptb_120
+        .container-fluid.container-fluid--cp-100
+          .row.footer-widget-wrapper
+            .col-lg-3.col-md-4.col-sm-6.footer-widget
+              h6.footer-widget__title.mb-20 = t :fast_menu
+              ul.footer-widget__list
+                li
+                  = link_to "#{t 'help'}", help_path, class: 'hover-style-link'
+                li
+                  = link_to "#{t 'store'}", item_categories_path, class: 'hover-style-link'
+                li
+                  = link_to "#{t 'return'}", root_path, class: 'hover-style-link'
+                li
+                  = link_to "#{t 'terms_condition'}", root_path, class: 'hover-style-link'
+                li
+                  = link_to "#{t 'policy'}", root_path, class: 'hover-style-link'
+            .col-lg-3.col-md-4.col-sm-6.footer-widget
+              h6.footer-widget__title.mb-20 = t :about_company
+              ul.footer-widget__list
+                li
+                  = link_to "#{t 'about_us'}", about_us_path, class: 'hover-style-link'
+                li
+                  = link_to "FAQ`s", faqs_path, class: 'hover-style-link'
+                li
+                  = link_to "#{t 'contacts'}", contact_us_path, class: 'hover-style-link'
+            - unless settings.social_links.blank?
+              .col-lg-3.col-md-4.col-sm-6.footer-widget
+                h6.footer-widget__title.mb-20 = t :social_media
+                ul.footer-widget__list
+                  li
+                    = link_to 'Facebook', settings.social_links.split(',').first, class: 'hover-style-link', target: '_blank'
+                  li
+                    = link_to 'Twitter', settings.social_links.split(',').second, class: 'hover-style-link', target: '_blank'
+                  li
+                    = link_to 'Instagram', settings.social_links.split(',').third, class: 'hover-style-link', target: '_blank'
+            .col-lg-3.col-md-6.col-sm-6.footer-widget
+              h6.footer-widget__title.mb-20 = t :subscribe
+              .footer-widget__newsletter.mt-30
+                = form_for Feedback.new, remote: true, html: { id: 'new_feedback' } do |f| 
+                  = f.email_field :email, placeholder: "#{t 'enter_your_email'}"
+                  = f.button nil, class: 'submit-button'
+                    i.icon-arrow-right
+      .footer-copyright-area.border-top.section-space--ptb_30
+        .container-fluid.container-fluid--cp-100
+          .row.align-items-center
+            .col-lg-6.col-md-6.order-md-1.order-2
+              span.copyright-text.text-center.text-md-left
+                | &copy; website developed by 
+                a href="vpv.ua" target="_blank"  VPV, Inc.
+            - unless settings.social_links.blank?
+              .col-lg-6.col-md-6.order-md-2.order-1.pb-3.pb-md-0
+                .footer-bottom-social
+                  h6.title = t :follow_us
+                  ul.list.footer-social-networks
+                    li.item
+                      = link_to settings.social_links.split(',').first, target: '_blank'
+                        i.fab.fa-facebook
+                    li.item
+                      = link_to settings.social_links.split(',').second, target: '_blank'
+                        i.fab.fa-twitter
+                    li.item
+                      = link_to settings.social_links.split(',').third, target: '_blank'
+                        i.fab.fa-instagram
+
+
+    = render partial: 'layouts/side_menu'
+    = render partial: 'layouts/search'
+    
+    a#scroll-top.scroll-top href="#" 
+      i.arrow-top.icon-arrow-up
+      i.arrow-bottom.icon-arrow-up
+
+    = javascript_include_tag 'application'
+
+    = yield :js
+
+

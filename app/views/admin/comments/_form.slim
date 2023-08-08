@@ -1,0 +1,61 @@
+= form_for [:admin, @comment] do |f|
+  .row
+    .col-lg-12
+      .pb-3.mb-3
+        .bg-white.rounded-xl.shadow-sm.px-4.py-5.p-md-5
+          .header-with-action.d-flex.justify-content-between.align-items-center
+            .header-name-page
+              h5.font-weight-700.section-title-4.text-left.pb-2.mb-4 
+                |Оновна інформація
+                .title-divider-round.mt-3
+          .row
+            .col-12
+              .form-row
+                .col-md-7.d-flex.align-items-center.mb-3.mb-md-0
+                  .pr-4.pr-md-5
+                    h6.font-weight-700 Ім'я коментатора
+                    p.mb-0 
+                      |Введіть або відредагуйте ім'я коментатора
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Ім'я коментатора
+                      .input-group-inner
+                        = f.text_field :name, class: 'form-control form-control-lg', placeholder: "Ім'я коментатора", required: "required"
+                .col-md-7.d-flex.align-items-center.mb-3.mb-md-0
+                  .pr-4.pr-md-5
+                    h6.font-weight-700 Коментар
+                    p.mb-0 
+                      |Введіть або відредагуйте коментар
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Коментар
+                      .input-group-inner
+                        = f.text_area :text, class: 'form-control form-control-lg', placeholder: "Коментар", required: "required"
+                .col-md-7.d-flex.align-items-center.mb-3.mb-md-0
+                  .pr-4.pr-md-5
+                    h6.font-weight-700 Дата публікації
+                    p.mb-0 
+                      |Введіть або відредагуйте дату публікації
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Дата публікації
+                      .input-group-inner
+                        = f.date_field :created_at, type: "date", class: 'form-control form-control-lg', required: "required"
+                .col-md-7.d-flex.align-items-center.mb-3.mb-md-0
+                  .pr-4.pr-md-5
+                    h6.font-weight-700 Налаштування публікація
+                    p.mb-0 
+                      |Оберіть, якщо поторібно опублікувати
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Статус публікації
+                      .custom-control.custom-switch
+                        = f.check_box :published, class: 'custom-control-input', id: "customSwitch1"
+                        label.custom-control-label for="customSwitch1" Опублікувати
+                .col-12.d-flex.align-items-center.justify-content-center.mt-3
+                  = link_to 'Відмінити', admin_comments_path, class: 'btn btn-lg btn-round btn-outline-primary m-0 mr-3'
+                  = f.submit 'Зберегти', class: 'btn btn-lg btn-round btn-primary m-0'

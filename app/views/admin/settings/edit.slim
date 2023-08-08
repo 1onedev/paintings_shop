@@ -1,0 +1,158 @@
+nav.pb-3.mb-3 aria-label="breadcrumb" 
+  ol.breadcrumb
+    li.breadcrumb-item
+      = link_to 'Головна', admin_root_path
+    li.breadcrumb-item.active aria-current="page" Налаштування
+
+.row
+  .col-lg-12
+    .pb-3.mb-3
+      .bg-white.rounded-xl.shadow-sm.px-4.py-5.p-md-5
+        .header-with-action.d-flex.justify-content-between.align-items-center
+          .header-name-page
+            h5.font-weight-700.section-title-4.text-left.pb-2.mb-4 
+              |Налаштування
+              .title-divider-round.mt-3
+        .row
+          .col-12
+            = form_for [:admin, settings], url: :admin_settings do |f|
+              = f.file_field :logo, style: 'overflow: hidden;display:none;', id: 'resource_logo'
+              .form-row
+                .col-md-7.d-flex.align-items-center.mb-3.mb-md-0
+                  .pr-4.pr-md-5
+                    h6.font-weight-700 Назва магазину
+                    p.mb-0 
+                      |Введіть назву магазину
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Назва магазину на українській
+                      .input-group-inner
+                        = f.text_field :market_name, class: 'form-control form-control-lg', placeholder: "Назва магазину на українській"
+                .col-md-7
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Назва магазину на англійській
+                      .input-group-inner
+                        = f.text_field :market_name_en, class: 'form-control form-control-lg', placeholder: "Назва магазину на англійській"
+                .col-md-7.d-flex.align-items-center.mb-3.mb-md-0
+                  .pr-4.pr-md-5
+                    h6.font-weight-700 Опис магазину
+                    p.mb-0 
+                      |Додайте опис магазину
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Опис магазину на українській
+                      .input-group-inner
+                        = f.text_area :about_market, class: 'form-control form-control-lg', placeholder: "Опис магазину на українській"
+                .col-md-7
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Опис магазину на англійській
+                      .input-group-inner
+                        = f.text_area :about_market_en, class: 'form-control form-control-lg', placeholder: "Опис магазину на англійській"
+                .col-md-7.d-flex.align-items-center.mb-3.mb-md-0
+                  .pr-4.pr-md-5
+                    h6.font-weight-700 Телефони
+                    p.mb-0 
+                      |Введіть номери телефонів через ","
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Телефони
+                      .input-group-inner
+                        = f.text_area :phones, class: 'form-control form-control-lg', placeholder: "Телефони"
+                .col-md-7.d-flex.align-items-center.mb-3.mb-md-0
+                  .pr-4.pr-md-5
+                    h6.font-weight-700 Email's
+                    p.mb-0 
+                      |Введіть email'и через ","
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Email's
+                      .input-group-inner
+                        = f.text_area :emails, class: 'form-control form-control-lg', placeholder: "Email's"
+                .col-md-7.d-flex.align-items-center.mb-3.mb-md-0
+                  .pr-4.pr-md-5
+                    h6.font-weight-700 Посилання на соц.мережі
+                    p.mb-0 
+                      |Введіть посилання на соц.мережі через ","
+                      br 
+                      |Наприклад: https://facebook.com/, https://instagram.com/
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Посилання на соц.мережі
+                      .input-group-inner
+                        = f.text_area :social_links, class: 'form-control form-control-lg', placeholder: "Посилання на соц.мережі"
+                .col-md-7.d-flex.align-items-center.mb-3.mb-md-0
+                  .pr-4.pr-md-5
+                    h6.font-weight-700 Адреса
+                    p.mb-0 
+                      |Введіть адресу офісу на різних мовах
+                      br 
+                      |Наприклад: м.Вінниця, вул.Вокзальна, 1, ст.: "Вокзальна"
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Адреса на українській
+                      .input-group-inner
+                        = f.text_area :adresses, class: 'form-control form-control-lg', placeholder: "Адреса на українській"
+                .col-md-7
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Адреса на англійській
+                      .input-group-inner
+                        = f.text_area :adresses_en, class: 'form-control form-control-lg', placeholder: "Адреса на англійській"
+                .col-md-7.d-flex.align-items-center.mb-3.mb-md-0
+                  .pr-4.pr-md-5
+                    h6.font-weight-700 Години роботи
+                    p.mb-0 
+                      |Введіть години роботи вашого магазину
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Години роботи
+                      .input-group-inner
+                        = f.text_area :time_work, class: 'form-control form-control-lg', placeholder: "Години роботи"
+                .col-md-7.d-flex.align-items-center.mb-3.mb-md-0
+                  .pr-4.pr-md-5
+                    h6.font-weight-700 Карта Google
+                    p.mb-0 
+                      |Додайте карту Google скопіювавши з тегом < frame >
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Години роботи
+                      .input-group-inner
+                        = f.text_area :cart_location, class: 'form-control form-control-lg', placeholder: "Карта Google"
+                .col-md-7.d-flex.align-items-center.mb-3.mb-md-0
+                  .pr-4.pr-md-5
+                    h6.font-weight-700 Логотип
+                    p.mb-0 
+                      |Додайте логотип компанії
+                      br 
+                      |Щоб завантажити натисніть на зображення
+                      br 
+                      |Розміри картинки: 200x200px/400x400px
+                      br 
+                      |Макс. вага файлу: 5Mb 
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Логотип
+                      .input-group-inner
+                        a.cover_picker#resource_logo_button
+                          - if settings.logo.exists?
+                            = image_tag settings.logo.url(:xs), class: 'img-responsive img-admin', width: '300px'
+                          - else
+                            = image_tag 'placeholder.jpg', class: 'img-responsive img-admin', width: '300px'
+                .col-12.d-flex.align-items-center.justify-content-center.mt-3
+                  = link_to :back, class: 'btn btn-lg btn-round btn-outline-primary m-0 mr-3'
+                    |Відмінити
+                  = f.submit 'Зберегти', class: 'btn btn-lg btn-round btn-primary m-0'

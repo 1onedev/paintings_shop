@@ -1,0 +1,80 @@
+doctype html
+html lang="en" 
+  head
+    title 
+      |Admin Panel | 
+      = settings.market_name 
+    meta charset="utf-8"
+    meta content="IE=edge" http-equiv="X-UA-Compatible" 
+    meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" 
+    meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"
+    
+    = csrf_meta_tags
+    = stylesheet_link_tag 'admin', media: 'all'
+
+    link rel="icon" sizes="32x32" type="image/png" href='/favicon/favicon-32x32.png' 
+    link rel="icon" sizes="16x16" type="image/png" href='/favicon/favicon-16x16.png'
+    link rel="icon" sizes="192x192" type="image/png" href='/favicon/android-chrome-192x192.png'
+    link rel="icon" sizes="512x512" type="image/png" href='/favicon/android-chrome-512x512.png'
+    link rel="apple-touch-icon" sizes="180x180" href='/favicon/apple-touch-icon.png'
+    link rel="icon" href="/favicon/favicon.ico"
+
+
+  body#body-pd
+    /! Notification
+    = render 'layouts/alert'
+    header#header.header
+      .header_toggle
+        i#header-toggle.bx.bx-menu
+    #nav-bar.l-navbar
+      nav.nav
+        div
+          = link_to admin_root_path, class: 'nav_logo'
+            i.bx.bx-image-alt.nav_logo-icon
+            span.nav_logo-name PAINTINGS
+          .nav_list
+            .link class="#{'active' if params[:controller] == 'admin/orders' or params[:controller] == 'admin/all_trip_orders'}"
+              = link_to admin_orders_path, class: 'nav_link'
+                i.bx.bx-notepad.nav_icon
+                span.nav_name Замовлення
+            .link class="#{'active' if params[:controller] == 'admin/authors'}"
+              = link_to admin_authors_path, class: 'nav_link'
+                i.bx.bx-paint.nav_icon
+                span.nav_name Автори
+            .link class="#{'active' if params[:controller].in?(%w[admin/items admin/item_categories admin/item_materials])}"
+              = link_to admin_items_path, class: 'nav_link'
+                i.bx.bx-image-alt.nav_icon
+                span.nav_name Картини
+            .link class="#{'active' if params[:controller] == 'admin/pages' && params[:action] == 'page_content' or params[:controller].in?(%w[admin/posts admin/answers admin/sliders admin/partners])}"
+              = link_to admin_page_content_path, class: 'nav_link' 
+                i.bx.bx-book-content.nav_icon
+                span.nav_name Наповнення сторінок
+            .link class="#{'active' if params[:action] == 'notifications' or params[:controller].in?(%w[admin/feedbacks admin/comments admin/messages])}"
+              = link_to admin_notifications_path, class: 'nav_link'
+                i.bx.bx-chat.nav_icon
+                span.nav_name Повідомлення
+            .link class="#{'active' if params[:controller] == 'admin/users'}"
+              = link_to admin_users_path, class: 'nav_link' 
+                i.bx.bx-user.nav_icon
+                span.nav_name Користувачі
+            .link class="#{'active' if params[:controller] == 'admin/settings'}"
+              = link_to edit_admin_settings_path, class: 'nav_link'
+                i.bx.bx-cog.nav_icon
+                span.nav_name Налаштування
+        = link_to destroy_admin_session_path, class: 'nav_link'
+          i.bx.bx-log-out.nav_icon
+          span.nav_name Вихід
+
+
+    .height-100.bg-light
+      .container
+        = yield
+
+    footer
+      
+
+
+    = javascript_include_tag 'admin'
+    = javascript_include_tag Ckeditor.cdn_url
+
+    = yield :js

@@ -1,0 +1,49 @@
+nav.pb-3.mb-3 aria-label="breadcrumb" 
+  ol.breadcrumb
+    li.breadcrumb-item
+      = link_to 'Повідомлення', admin_notifications_path
+    li.breadcrumb-item.active aria-current="page" Коментарі
+
+- if @comments.present?
+  .row
+    .col-lg-12
+      .pb-3.mb-3
+        .bg-white.rounded-xl.shadow-sm.px-4.py-5.p-md-5
+          .header-with-action.d-flex.justify-content-between.align-items-center
+            .header-name-page
+              h5.font-weight-700.section-title-4.text-left.pb-2.mb-4 
+                |Коментарі
+                .title-divider-round.mt-3
+          .row
+            .col-12
+              table.table.table-striped
+                thead
+                  tr
+                    th scope="col"  Дата
+                    th scope="col"  Ім'я
+                    th scope="col"  Текст
+                    th scope="col"  Статус
+                    th scope="col" 
+                tbody
+                  - @comments.each do |comment|
+                    tr
+                      th.align-middle scope="row" = comment.created_at.try(:strftime, '%d.%m.%y')
+                      td.align-middle = comment.name
+                      td.align-middle = comment.text
+                      td.align-middle = published_tag comment
+                      td.align-middle 
+                        = link_to edit_admin_comment_path(comment)
+                          i.bx.bx-pencil
+                        = link_to [:admin, comment],  method: :delete, data: { confirm: 'Удалить?' }
+                          i.bx.bx-trash-alt.ml-3
+                          
+            .col-12.d-flex.justify-content-center
+              = paginate @comments
+
+- else
+  .row
+    .col-lg-12
+      .pb-3.mb-3
+        .bg-white.rounded-xl.shadow-sm.px-4.py-5.p-md-5
+          .no-date.d-flex.justify-content-center Дані відсутні
+

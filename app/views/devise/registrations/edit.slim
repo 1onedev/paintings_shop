@@ -1,0 +1,73 @@
+.clearfix
+section.breadcrumb-area
+  .container
+    .row
+      .col-12.col-sm-6
+        .page-title
+          h1 Изменить данные
+      .col-12.col-sm-6
+        nav aria-label="breadcrumb" 
+          ol.breadcrumb
+            li.breadcrumb-item
+              = link_to 'Главная', root_path
+            li.breadcrumb-item.active aria-current="page"  Изменить данные
+
+.content-wrapper.account-page
+  section.login-and-register
+    .container
+      .row
+        .col-12.col-sm-12.col-md-2
+        .col-12.col-sm-12.col-md-8
+          = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: 'form shipping-form' }) do |f|
+            .shipping-address
+              h4 Контактные данные
+              p
+                span
+                | Вы можете создать учетную запись после оформления заказа.
+              .form-group
+                label
+                  | Имя
+                  span *
+                = f.text_field :name, class: 'form-control', required: "required"
+              .form-group
+                label
+                  | Фамилия
+                  span *
+                = f.text_field :surname, class: 'form-control', required: "required"
+              .form-group
+                label
+                  | Телефон
+                  span *
+                = f.telephone_field :phone, class: 'form-control phone', required: 'required'
+              .form-group
+                label
+                  | Електронная почта
+                  span *
+                = f.email_field :email, class: 'form-control', required: 'required'
+              .form-group
+                label
+                  | Пароль
+                  span *
+                = f.password_field :current_password, class: 'form-control', required: 'required'
+            .shipping-address
+              h4 Адрес доставки
+              .form-group
+                label Населенный пункт
+                = f.text_field :locality, class: 'form-control', required: 'required'
+              .form-group.position-relative
+                label Служба доставки
+                = f.select :delivery_service, User.delivery_services.map {|k, v| [t("enums.#{k}"), k]}, { include_blank: 'Выберите службу доставки' }, { class: 'form-control' }
+              .form-group.position-relative
+                label Тип доставки
+                = f.select :delivery_type, User.delivery_types.map {|k, v| [t("enums.#{k}"), k]}, { include_blank: 'Выберите тип доставки' }, { class: 'form-control' }
+              .form-group
+                label Номер отделения / Адрес доставки
+                = f.text_field :delivery_comment, class: 'form-control', required: 'required'
+            = link_to user_my_account_path
+              button.submit-btn.common-btn-1.mb-3
+                span Отменить
+            = f.button '', class: 'submit-btn common-btn-1'
+              span Сохранить
+        .col-12.col-sm-12.col-md-2
+
+

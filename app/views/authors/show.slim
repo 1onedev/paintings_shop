@@ -1,0 +1,92 @@
+.breadcrumb-area.section-space--pt_120
+  .container
+    .row
+      .col-12
+        .row.breadcrumb_box.align-items-center
+          .col-lg-6.col-md-6.col-sm-6.text-center.text-sm-left
+            h2.breadcrumb-title = @author.name
+          .col-lg-6.col-md-6.col-sm-6
+            ul.breadcrumb-list.text-center.text-sm-right
+              li.breadcrumb-item
+                = link_to "#{t 'home_page'}", root_path
+              li.breadcrumb-item.active = @author.name
+              
+.site-wrapper-reveal
+  .single-product-wrap.section-space--pt_90.border-bottom
+    .container
+      .row
+        .col-lg-7.col-md-6.col-sm-12.col-xs-12
+          = image_tag @author.image.url(:lg), class: 'img-fluid', alt: @author.name
+        .col-lg-5.col-md-6.col-sm-12.col-xs-12
+          .product-details-content
+            h5.font-weight--reguler.mb-10 = @author.name
+            .quickview-peragraph.mt-10
+              p = truncate_markup @author.description.try(:html_safe), 120
+            .product_meta.mt-30
+              .posted_in.item_meta
+                span.label
+                  = t :total_painting_count
+                  |:
+                =< @author_items_not_sold.count + @author_items_sold.count
+            .product_socials.section-space--mt_60
+              span.label = t :share
+              ul.helendo-social-share.socials-inline
+                #share
+      .row
+        .col-12
+          .product-details-tab.section-space--pt_90
+            ul.nav role="tablist" 
+              li.active role="presentation" 
+                a.active data-toggle="tab" href="#description" role="tab" = t :description
+        .col-12
+          .product_details_tab_content.tab-content.mt-30
+            #description.product_tab_content.tab-pane.active role="tabpanel" 
+              .product_description_wrap
+                = @author.description.try(:html_safe)
+      .related-products.section-space--ptb_90
+        .row
+          .col-lg-12
+            .section-title.text-center.mb-30
+              h4 = t :author_items
+        .row
+          - @author_items_not_sold.each do |item|
+            .col-lg-3.col-md-4.col-sm-6
+              .single-product-item.text-center
+                .products-images
+                  = link_to item_category_item_path(item_category_id: item.item_category.id, id: item.id), class: 'product-thumbnail'
+                    = image_tag item.images.first.file.url(:sm), class: 'img-fluid', alt: item.name
+                    = availabilities_tag(item)
+                  .product-actions
+                    = link_to ajax_cart_url(item: item), remote: true, method: :post
+                      i.p-icon.icon-bag2
+                      span.tool-tip = t :add_to_cart
+                    = link_to ajax_favorites_url(favorite: item), remote: true, method: :post
+                      i.p-icon.icon-heart
+                      span.tool-tip = t :add_to_wishlist
+                .product-content
+                  h6.prodect-title
+                    = link_to item.name, item_category_item_path(item_category_id: item.item_category.id, id: item.id)
+                  .prodect-price
+                    span.new-price = price_format item.price
+          - @author_items_sold.each do |item|
+            .col-lg-3.col-md-4.col-sm-6
+              .single-product-item.text-center
+                .products-images
+                  = link_to item_category_item_path(item_category_id: item.item_category.id, id: item.id), class: 'product-thumbnail'
+                    = image_tag item.images.first.file.url(:sm), class: 'img-fluid', alt: item.name
+                    = availabilities_tag(item)
+                  .product-actions
+                    = link_to ajax_cart_url(item: item), remote: true, method: :post
+                      i.p-icon.icon-bag2
+                      span.tool-tip = t :add_to_cart
+                    = link_to ajax_favorites_url(favorite: item), remote: true, method: :post
+                      i.p-icon.icon-heart
+                      span.tool-tip = t :add_to_wishlist
+                .product-content
+                  h6.prodect-title
+                    = link_to item.name, item_category_item_path(item_category_id: item.item_category.id, id: item.id)
+                  .prodect-price
+                    span.new-price = price_format item.price
+
+
+

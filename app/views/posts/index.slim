@@ -1,0 +1,36 @@
+.breadcrumb-area.section-space--pt_120
+  .container
+    .row
+      .col-12
+        .row.breadcrumb_box.align-items-center
+          .col-lg-6.col-md-6.col-sm-6.text-center.text-sm-left
+            h2.breadcrumb-title = t :news_page
+          .col-lg-6.col-md-6.col-sm-6
+            ul.breadcrumb-list.text-center.text-sm-right
+              li.breadcrumb-item
+                = link_to "#{t 'home_page'}", root_path
+              li.breadcrumb-item.active = t :news_page
+
+.site-wrapper-reveal.border-bottom
+  .blog-page-wrapper.section-space--pt_90.section-space--pb_120
+    .container
+      .row
+        - @posts.each do |post|
+          .col-lg-4.col-md-6.col-sm-6.col-12
+            .single-blog-item.mt-40
+              .blog-thumbnail-box
+                = link_to post_path(post), class: 'thumbnail'
+                  = image_tag post.image.url(:sm), class: 'img-fluid', alt: post.name
+                = link_to "#{t 'more'}", post_path(post), class: 'btn-blog'
+              .blog-contents
+                h6.blog-title
+                  = link_to post_path(post)
+                    = truncate_markup post.name, 30
+                .meta-tag-box
+                  .meta.date
+                    span = post.created_at.try(:strftime, '%d.%m.%Y')
+      .paginatoin-area
+        .row       
+          .col-lg-12
+            = paginate @posts, theme: 'my_custom_theme'
+        

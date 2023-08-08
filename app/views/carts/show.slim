@@ -1,0 +1,171 @@
+= form_for Order.new, url: cart_url, method: :post do |f|
+  #cart_path
+    .breadcrumb-area.section-space--pt_120
+      .container
+        .row
+          .col-12
+            .row.breadcrumb_box.align-items-center
+              .col-lg-6.col-md-6.col-sm-6.text-center.text-sm-left
+                h2.breadcrumb-title = t :cart
+              .col-lg-6.col-md-6.col-sm-6
+                ul.breadcrumb-list.text-center.text-sm-right
+                  li.breadcrumb-item
+                    = link_to "#{t 'home_page'}", root_path
+                  li.breadcrumb-item.active = t :cart
+
+    .site-wrapper-reveal.border-bottom
+      .cart-main-area.section-space--ptb_120
+        .container
+          .row
+            .col-lg-12
+              .table-content.table-responsive.cart-table-content.header-color-gray
+                table
+                  thead
+                    tr.bg-gray
+                      th
+                      th
+                      th.product-name.pl-3 = t :item_name
+                      th.product-price = t :item_price
+                      th = t :count
+                      th = t :total_price_item
+                      th
+                  tbody
+                    = f.fields_for :order_items, cart_items do |order_item|
+                      = render 'shared/cart_page_items', f: order_item
+                    
+              .shoping-update-area.row
+                .continue-shopping-butotn.col-6.mt-30
+                  a.btn.btn--lg.btn--black href="#" 
+                    i.icon-arrow-left
+                    =< t :back_to_paintings
+              .cart-buttom-area
+                .row
+                  .col-lg-6
+                  .col-lg-6
+                    .cart_totals.ml-md-auto
+                      .grand-total-wrap
+                        .grand-total-content
+                          ul
+                            li
+                              = t :total_price_item
+                              span = price_format(cart_items.sum(&:price).to_i)
+                            li
+                              = t :final_price
+                              span = price_format(cart_items.sum(&:price).to_i)
+                      .grand-btn.mt-30
+                        a#cartNextButton.btn--black.btn--full.text-center.btn--lg = t :continue
+
+
+
+  #checkout_path.d-none
+    .breadcrumb-area.section-space--pt_120
+      .container
+        .row
+          .col-12
+            .row.breadcrumb_box.align-items-center
+              .col-lg-6.col-md-6.col-sm-6.text-center.text-sm-left
+                h2.breadcrumb-title = t :checkout
+              .col-lg-6.col-md-6.col-sm-6
+                ul.breadcrumb-list.text-center.text-sm-right
+                  li.breadcrumb-item
+                    = link_to "#{t 'home_page'}", root_path
+                  li.breadcrumb-item.active = t :checkout
+
+    .site-wrapper-reveal.border-bottom
+      .checkout-main-area.section-space--ptb_90
+        .container
+          .checkout-wrap
+            .row
+              .col-lg-7
+                .billing-info-wrap.mr-100
+                  h6.mb-20 = t :billing_dateils
+                  .row
+                    .col-lg-6.col-md-6
+                      .billing-info.mb-25
+                        label
+                          = t :name
+                          span.required title="required"  *
+                        = f.text_field :name, value: "#{current_user.name if current_user.present?}", required: 'required'
+                    .col-lg-6.col-md-6
+                      .billing-info.mb-25
+                        label
+                          = t :surname
+                          span.required title="required"  *
+                        = f.text_field :surname, value: "#{current_user.surname if current_user.present?}", required: 'required'
+                    .col-lg-12
+                      .billing-info.mb-25
+                        label
+                          = t :order_locality
+                          span.required title="required"  *
+                        = f.text_field :locality, placeholder: "#{t 'order_locality_text'}"
+                    .col-lg-12
+                      .billing-select.mb-25
+                        label
+                          = t :delivery_service
+                          span.required title="required"  *
+                        = f.select :delivery_service, Order.delivery_services.map {|k, v| [t("enums.#{k}"), k]}, { include_blank: false }, { class: 'select-active' }
+                    .col-lg-12
+                      .billing-select.mb-25
+                        label
+                          = t :delivery_type
+                          span.required title="required"  *
+                        = f.select :delivery_type, Order.delivery_types.map {|k, v| [t("enums.#{k}"), k]}, { include_blank: false }, { class: 'select-active' }
+                    .col-lg-12.col-md-12
+                      .billing-info.mb-25
+                        label
+                          = t :phone
+                          span.required title="required"  *
+                        = f.text_field :phone, value: "#{current_user.phone if current_user.present?}", required: 'required'
+                    .col-lg-12.col-md-12
+                      .billing-info.mb-25
+                        label
+                          | Email
+                          span.required title="required"  *
+                        = f.email_field :email, value: "#{current_user.email if current_user.present?}", required: 'required'
+                  .additional-info-wrap
+                    h6.mb-10 = t :additional_info
+                    label = t :order_comment
+                    = f.text_area :delivery_comment, placeholder: "#{t 'order_comment'}" 
+              .col-lg-5
+                .your-order-wrappwer.tablet-mt__60.small-mt__60
+                  h6.mb-20 = t :your_order
+                  .your-order-area
+                    .your-order-wrap.gray-bg-4
+                      .your-order-info-wrap
+                        .your-order-info
+                          ul
+                            li
+                              = t :item_name
+                              span = t :final_price
+                        .your-order-middle
+                          ul
+                            - cart_items.each do |item|
+                              li
+                                => item.name
+                                |(x 1)
+                                span = price_format item.price
+                        .your-order-info.order-subtotal
+                          ul
+                            li
+                              strong = t :order_final_price
+                              span = price_format(cart_items.sum(&:price).to_i)
+                        .your-order-info.order-total
+                          ul
+                            li
+                              strong = t :total
+                              span = price_format(cart_items.sum(&:price).to_i)
+                        .payment-area.mt-30
+                          .single-payment
+                            h6.mb-10 = t :check_order
+                            p = t :check_order_text
+                          / .single-payment.mt-20
+                          /   h6.mb-10 What is PayPal?
+                          /   p Pay via PayPal; you can pay with your credit card if you don’t have a PayPal account.
+                  .payment-method
+                    p.mt-30
+                      = t :privacy_policy_devise_text
+                      = link_to "#{t 'privacy_policy_devise'}", root_path
+                  .place-order.mt-30
+                    = f.button "#{t 'to_pay'}", class: 'btn btn--full btn--black btn--lg text-center'
+
+                    a#cartBackButton.btn.btn--lg.btn--border_1.btn--full.mt-3 = t :back

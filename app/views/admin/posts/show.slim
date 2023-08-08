@@ -1,0 +1,48 @@
+nav.pb-3.mb-3 aria-label="breadcrumb" 
+  ol.breadcrumb
+    li.breadcrumb-item
+      = link_to 'Головна', admin_root_path
+    li.breadcrumb-item
+      = link_to 'Наповнення сторінок', admin_page_content_path
+    li.breadcrumb-item
+      = link_to 'Новини', admin_posts_path
+    li.breadcrumb-item.active aria-current="page" = @post.name
+
+.row
+  .col-lg-12
+    .pb-3.mb-3
+      .bg-white.rounded-xl.shadow-sm.px-4.py-5.p-md-5
+        .header-with-action.d-flex.justify-content-between.align-items-center
+          .header-name-page
+            h5.font-weight-700.section-title-4.text-left.pb-2.mb-4 
+              |Фото
+              .title-divider-round.mt-3
+        .row
+          .col-12.d-flex.justify-content-center
+            = image_tag @post.image.url(:lg), class: 'img-admin'
+
+.row
+  .col-lg-12
+    .pb-3.mb-3
+      .bg-white.rounded-xl.shadow-sm.px-4.py-5.p-md-5
+        .header-with-action.d-flex.justify-content-between.align-items-center
+          .header-name-page
+            h5.font-weight-700.section-title-4.text-left.pb-2.mb-4 
+              |Назва та текст
+              .title-divider-round.mt-3
+        .row
+          .col-12
+            .text-name
+              = @post.name
+            .main-text
+              = @post.text.try(:html_safe)
+      
+
+.row
+  .col-lg-12
+    .pb-3.mb-3
+      .bg-white.rounded-xl.shadow-sm.px-2.py-2.p-md-2.d-flex.align-items-center.justify-content-center
+        = link_to edit_admin_post_path(@post), class: 'main-link'
+          i.bx.bx-pencil
+        = link_to [:admin, @post], class: 'main-link',  method: :delete, data: { confirm: 'Удалить?' }
+          i.bx.bx-trash-alt.ml-3

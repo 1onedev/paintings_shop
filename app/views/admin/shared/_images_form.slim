@@ -1,0 +1,41 @@
+= form_tag "/admin/delete_photos", method: :delete, class: 'upload_images'
+  .row
+    .col-12
+      .btn-toolbar.mb-3
+        = link_to 'Додати', 'javascript:;', class: 'btn btn-md btn-round btn-primary m-0', data: { toggle: 'modal', target: '#myModal' }
+        / = submit_tag 'Удалить', class: 'btn btn-outline-danger btn-sm btn-rounded', id: 'delete', disabled: "#{images.blank?}", data: { confirm: 'Удалить?' }
+  .row
+    .col-md-12.col-sm-12.col-xs-12#media-contents
+      table.table
+        tbody#sortable data-resource='images' data-redirect-url="#{redirect_url}" data-resource-attribute='position'
+          - if images.empty?
+            h5.description id="no-media" Додаткові фото відсутні
+          - else
+            - images.each do |image|
+              tr data-id="#{ image.id }"
+                td.text-left style='width: 130px; vertical-align: middle'
+                  .form-check.m-0.p-0
+                    label.custom-checkbox.d-flex.align-items-center
+                      = check_box_tag "images[]", image.id, false, class: "form-check-input check-photo position-static m-0"
+                      span
+                td = image.position
+                td
+                  = image_tag image.file.url(:xs), class: 'img-responsive img-admin-sm', width: '40px'
+                td.text-right style="vertical-align: middle"
+                  = link_to "<i class='fal fa-times'></i>".html_safe, admin_image_path(image, redirect_url: redirect_url), method: :delete, data: { confirm: 'Видалити?' }, class: 'delete-icon'
+
+.modal id="myModal" tabindex="-1"
+  .modal-dialog
+    .modal-content
+      .modal-header
+        h5.description Додати фото
+        button.close type="button" class="close" data-dismiss="modal"
+          i.fal.fa-times
+      .modal-body
+        = form_tag "/admin/images?imageable_id=#{imageable_id}&imageable_type=#{imageable_type}&redirect_url=#{redirect_url}", method: :post, class: "dropzone form d-flex align-items-center justify-content-center", id: "media-dropzone"
+          .dz-message
+            h5.description Перетягніть або оберіть фото
+          .fallback
+            = file_field_tag "images", multiple: true
+      .modal-footer
+        = button_tag 'Закрити', class: 'btn btn-outline-danger btn-sm', data: { dismiss: 'modal' }

@@ -1,0 +1,69 @@
+nav.pb-3.mb-3 aria-label="breadcrumb" 
+  ol.breadcrumb
+    li.breadcrumb-item
+      = link_to 'Картини', admin_items_path
+    li.breadcrumb-item.active aria-current="page" = @item_material.name
+
+.row
+  .col-lg-12
+    .pb-3.mb-3
+      .bg-white.rounded-xl.shadow-sm.px-4.py-5.p-md-5
+        .header-with-action.d-flex.justify-content-between.align-items-center
+          .header-name-page
+            h5.font-weight-700.section-title-4.text-left.pb-2.mb-4 
+              |Інформація
+              .title-divider-round.mt-3
+        .row
+          .col-12
+            table.table.table-striped
+              tbody
+                tr
+                  th Назва
+                  td = @item_material.name
+
+.row
+  .col-lg-12
+    .pb-3.mb-3
+      .bg-white.rounded-xl.shadow-sm.px-4.py-5.p-md-5
+        .header-with-action.d-flex.justify-content-between.align-items-center
+          .header-name-page
+            h5.font-weight-700.section-title-4.text-left.pb-2.mb-4 
+              |Картини матеріалу
+              .title-divider-round.mt-3
+        - if @items.present?
+          .row
+            .col-12
+              table.table
+                thead
+                  tr
+                    th scope="col"  #
+                    th scope="col"  Дата
+                    th scope="col"  Картина
+                    th scope="col"  Ціна
+                    th scope="col" 
+                tbody
+                  - @items.each do |item|
+                    tr
+                      th.align-middle scope="row" = @items.index(item) + 1
+                      td.align-middle = item.created_at.try(:strftime, '%d.%m.%Y')
+                      td.align-middle = link_to item.name, admin_item_path(item)
+                      td.align-middle = price_format(item.price)
+                      td.align-middle 
+                        = link_to admin_item_path(item)
+                          i.bx.bx-show
+                        = link_to [:admin, item],  method: :delete, data: { confirm: 'Удалить?' }
+                          i.bx.bx-trash-alt.ml-3
+            .col-12.d-flex.justify-content-center
+              = paginate @items
+        - else
+          .no-date.d-flex.justify-content-center Дані відсутні
+
+.row
+  .col-lg-12
+    .pb-3.mb-3
+      .bg-white.rounded-xl.shadow-sm.px-2.py-2.p-md-2.d-flex.align-items-center.justify-content-center
+        = link_to edit_admin_item_material_path(@item_material), class: 'main-link'
+          i.bx.bx-pencil
+        = link_to [:admin, @item_material], class: 'main-link',  method: :delete, data: { confirm: 'Удалить?' }
+          i.bx.bx-trash-alt.ml-3
+      

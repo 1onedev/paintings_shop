@@ -1,0 +1,19 @@
+.breadcrumb-area.section-space--pt_120
+      .container
+        .row
+          .col-12
+            .row.breadcrumb_box.align-items-center
+              .col-lg-6.col-md-6.col-sm-6.text-center.text-sm-left
+                h2.breadcrumb-title = t :payment_info
+              .col-lg-6.col-md-6.col-sm-6
+                ul.breadcrumb-list.text-center.text-sm-right
+                  li.breadcrumb-item
+                    = link_to "#{t 'home_page'}", root_path
+                  li.breadcrumb-item.active = t :payment_info
+
+.site-wrapper-reveal.border-bottom
+  .container.section-space--ptb_120
+    .row
+      .col-lg-6.offset-3
+        h5.text-center = t :thank_for_buy
+        = link_to "#{t 'back_to_shop'}", item_categories_path, class: 'btn btn--full btn--black btn--lg text-center mt-5'

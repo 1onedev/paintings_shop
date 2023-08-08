@@ -1,0 +1,14 @@
+- unless notice.blank?
+  .alert.alert-info
+    button.close type="button" data-dismiss="alert" aria-hidden="true"
+      '&times;
+    = notice
+- unless alert.blank?
+  .alert.alert-danger
+    button.close type="button" data-dismiss="alert" aria-hidden="true"
+      '&times;
+    = alert
+
+- content_for :js
+  javascript:
+    $(".alert").delay(4000).fadeOut(4000);

@@ -1,0 +1,29 @@
+- if cart_items.present?
+  .minicart-content
+    ul.minicart-list
+      - cart_items.each do |item|
+        li.minicart-product
+          = link_to ajax_cart_url(item: item, from_cart: params[:controller] == 'cart'), remote: true, method: :delete, class: 'product-item_remove', rel: 'nofollow'
+            i.icon-cross2
+          = link_to item_category_item_path(item_category_id: item.item_category.id, id: item.id), class: 'product-item_img'
+            = image_tag item.images.first.file.url(:lg), class: 'img-fluid', style: 'width:100px;height:auto;', alt: item.name
+          .product-item_content
+            = link_to item.name, item_category_item_path(item_category_id: item.item_category.id, id: item.id), class: 'product-item_title'
+            label
+              = t :count_short
+              |: 
+              span 1
+            label.product-item_quantity
+              = t :item_price
+              |: 
+              span =< price_format(item.price)
+  .minicart-item_total
+    span.font-weight--reguler 
+      = t :final_price
+      |:
+    span.ammount.font-weight--reguler = price_format(cart_items.sum(&:price))
+  .minicart-btn_area
+    = link_to "#{t 'to_cart'}", cart_path, class: 'btn btn--full btn--border_1'
+- else
+  .text-center.font-size-24.font-weight-500.py-4 = t :cart_nil
+  = link_to "#{t 'start_shop'}", item_categories_path, class: 'btn btn--full btn--border_1'

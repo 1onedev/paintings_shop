@@ -1,0 +1,58 @@
+.breadcrumb-area.section-space--pt_120
+  .container
+    .row
+      .col-12
+        .row.breadcrumb_box.align-items-center
+          .col-lg-6.col-md-6.col-sm-6.text-center.text-sm-left
+            h2.breadcrumb-title = t :my_account
+          .col-lg-6.col-md-6.col-sm-6
+            ul.breadcrumb-list.text-center.text-sm-right
+              li.breadcrumb-item
+                = link_to "#{t 'home_page'}", root_path
+              li.breadcrumb-item.active = t :my_account
+
+
+.site-wrapper-reveal.border-bottom
+  .coming-soon-area.section-space--ptb_120
+    .container
+      .row
+        .col-lg-3
+          ul.user-menu
+            li class="#{'active' if params[:controller] == 'user/infos'}"
+              = link_to "#{t 'my_account'}", user_root_path
+            li class="#{'active' if params[:controller] == 'user/orders'}"
+              = link_to user_orders_path
+                = t :my_orders
+                =< ['(', current_user.orders.count, ')'].join('')
+            li
+              = link_to "#{t 'log_out'}", destroy_user_session_path
+        .col-lg-9
+          table.table.table-striped
+            tbody
+              tr
+                th 
+                  = t :name
+                  |:
+                td = current_user.name
+              tr
+                th
+                  = t :surname
+                  |:
+                td = current_user.surname
+              tr
+                th Email:
+                td = current_user.email
+              tr
+                th
+                  = t :phone
+                  |:
+                td = current_user.phone
+              tr
+                th 
+                  = t :date_of_create
+                  |:
+                td = current_user.created_at.strftime('%d.%m.%Y')
+          .d-flex.justify-content-end.mt-3
+            = link_to "#{t 'change_password'}", new_password_path(current_user), class: 'btn--black text-center btn--md'
+          .d-flex.justify-content-center.mt-5
+            = link_to "#{t 'edit'}", edit_user_infos_path, class: 'btn--black text-center btn--md'

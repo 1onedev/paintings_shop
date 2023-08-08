@@ -1,0 +1,8 @@
+/ do not remove .nested-fields class
+.nested-fields
+  .form-row.mb-4
+    .col-10
+      = f.collection_select :item_id, Item.all, :id, :name_with_price, { include_blank: true }, { class: 'form-control chosen-select' }
+    .col-2.d-flex.align-items-center.justify-content-end
+      = link_to_remove_association f, class: 'btn btn-lg btn-round btn-primary m-0'
+        i.fal.fa-trash-alt

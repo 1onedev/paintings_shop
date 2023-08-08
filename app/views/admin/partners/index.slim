@@ -1,0 +1,60 @@
+.page-header.pb-3.mb-3
+  nav aria-label="breadcrumb" 
+    ol.breadcrumb
+      li.breadcrumb-item
+        = link_to 'Головна', admin_root_path
+      li.breadcrumb-item
+        = link_to 'Наповнення сторінок', admin_page_content_path
+      li.breadcrumb-item.active aria-current="page" Партнери
+  .add-link
+    = link_to new_admin_partner_path, class: 'btn btn-lg btn-round btn-primary m-0'
+      i.bx.bx-plus
+      |Додати
+
+- if @partners.present?
+  .row
+    .col-lg-12
+      .pb-3.mb-3
+        .bg-white.rounded-xl.shadow-sm.px-4.py-5.p-md-5
+          .header-with-action.d-flex.justify-content-between.align-items-center
+            .header-name-page
+              h5.font-weight-700.section-title-4.text-left.pb-2.mb-4 
+                |Партнери
+                .title-divider-round.mt-3
+          .row
+            .col-12
+              table.table.table-striped
+                thead
+                  tr
+                    th scope="col"  #
+                    th scope="col"  Фото
+                    th scope="col"  Назва
+                    th scope="col"  Посилання
+                    th scope="col" 
+                tbody
+                  - @partners.each_with_index do |partner, index|
+                    tr
+                      th.align-middle style="width:5%;" scope="row" = index + 1
+                      td.align-middle style="width:20%;" = image_tag partner.image.url(:xs), class: 'img-table'
+                      td.align-middle style="width:20%;" = link_to partner.name, admin_partner_path(partner)
+                      td.align-middle style="width:20%;"
+                        - if partner.link.present?
+                          span.badge.badge-pill.badge-success Присутнє
+                        - else
+                          span.badge.badge-pill.badge-danger Відсутнє
+                      td.align-middle style="width:10%;"
+                        = link_to admin_partner_path(partner)
+                          i.bx.bx-show
+                        = link_to [:admin, partner],  method: :delete, data: { confirm: 'Удалить?' }
+                          i.bx.bx-trash-alt.ml-3
+                          
+            .col-12.d-flex.justify-content-center
+              = paginate @partners
+
+- else
+  .row
+    .col-lg-12
+      .pb-3.mb-3
+        .bg-white.rounded-xl.shadow-sm.px-4.py-5.p-md-5
+          .no-date.d-flex.justify-content-center Дані відсутні
+

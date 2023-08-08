@@ -1,0 +1,31 @@
+nav.pb-3.mb-3 aria-label="breadcrumb" 
+  ol.breadcrumb
+    li.breadcrumb-item
+      = link_to 'Головна', admin_root_path
+    li.breadcrumb-item.active aria-current="page" Наповнення сторінок
+
+.row
+  .col-lg-12
+    .pb-3.mb-3
+      .bg-white.rounded-xl.shadow-sm.px-4.py-5.p-md-5
+        ul.link-menu
+          li.link-menu-item.item-with-icon
+            = link_to admin_posts_path
+              |Новини
+            = link_to admin_posts_path
+              i.bx.bx-right-arrow
+          li.link-menu-item.item-with-icon
+            = link_to admin_sliders_path
+              |Слайди
+            = link_to admin_sliders_path
+              i.bx.bx-right-arrow
+          li.link-menu-item.item-with-icon
+            = link_to admin_partners_path
+              |Партнери
+            = link_to admin_partners_path
+              i.bx.bx-right-arrow
+          li.link-menu-item.item-with-icon
+            = link_to admin_answers_path
+              |FAQ's
+            = link_to admin_answers_path
+              i.bx.bx-right-arrow

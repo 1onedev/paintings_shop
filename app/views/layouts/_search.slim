@@ -1,0 +1,30 @@
+#search-overlay.search-overlay
+  .search-overlay__header
+    .container
+      .row.align-items-center
+        .col-lg-6.col-8
+          .search-title
+            h4.font-weight--normal = t :search
+        .col-md-6.ml-auto.col-4
+          .search-content.text-right
+            span#search-close-trigger.mobile-navigation-close-icon
+              i.icon-cross
+  .search-overlay__inner
+    .search-overlay__body
+      .search-overlay__form
+        .container
+          .row
+            .col-lg-9.ml-auto.mr-auto
+              .product-cats.section-space--mb_60.text-center
+                label
+                  = link_to item_categories_path
+                    span.line-hover = t :all_paintings
+                - item_categories.each do |item_category|
+                  label
+                    = link_to item_category_path(item_category)
+                      span.line-hover = item_category.name
+              = form_tag({:controller => "/item_categories", action: :index}, method: :get, class: 'search-form live-search-on') do
+                .search-fields
+                  = text_field_tag :q, params[:q], class: 'search-field', placeholder: "#{t 'search'}", id: 'search-field-main'
+                  = button_to nil, class: 'submit-button'
+                    i.icon-magnifier

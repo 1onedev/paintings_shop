@@ -1,0 +1,86 @@
+.breadcrumb-area.section-space--pt_120
+  .container
+    .row
+      .col-12
+        .row.breadcrumb_box.align-items-center
+          .col-lg-6.col-md-6.col-sm-6.text-center.text-sm-left
+            h2.breadcrumb-title = t :abouts_page
+          .col-lg-6.col-md-6.col-sm-6
+            ul.breadcrumb-list.text-center.text-sm-right
+              li.breadcrumb-item
+                = link_to "#{t 'home_page'}", root_path
+              li.breadcrumb-item.active = t :abouts_page
+
+.site-wrapper-reveal.border-bottom
+  .about-us-pages-area
+    .banner-video-area.overflow-hidden.section-space--pt_90
+      .container
+        .row
+          .col-lg-12
+            .banner-video-box
+              = image_tag 'video-about.jpg'
+    .our-customer-suppoer-area
+      .container
+        .row
+          .col-lg-3.col-md-6.col-sm-6.col-6
+            .single-support-item
+              .header-support
+                .icon
+                  i.icon-bag2
+                h6 Shop online
+              .iconbox-desc
+                p There are many variations pasbut the majority have suffered.
+          .col-lg-3.col-md-6.col-sm-6.col-6
+            .single-support-item
+              .header-support
+                .icon
+                  i.icon-cash-dollar
+                h6 Payment methods
+              .iconbox-desc
+                p Letraset sheets containing Lorem Ipsum publishing software.
+          .col-lg-3.col-md-6.col-sm-6.col-6
+            .single-support-item
+              .header-support
+                .icon
+                  i.icon-paper-plane
+                h6 Free shipping
+              .iconbox-desc
+                p when an unknown printer took a make a type book.
+          .col-lg-3.col-md-6.col-sm-6.col-6
+            .single-support-item
+              .header-support
+                .icon
+                  i.icon-history
+                h6 Return policy
+              .iconbox-desc
+                p Various versions have evolved over the years purpose.
+    - unless settings.about_market.blank?
+      .perfection-area.section-space--pt_90
+        .container
+          .row
+            .col-lg-12
+              .perfection-dec.mr-lg-5
+                h5.mb-10 Functionality meets perfection
+                p = settings.about_market.try(:html_safe)
+    .banner-preduct-wrapper.section-space--pt_90.section-space--pb_120
+      .container
+        .row.row--6
+          .col-lg-8.col-md-8
+            .banner-product-image.mt-10
+              a href="#" 
+                = image_tag 'im-md-1-780x770.jpg', class: 'img-fluid'
+          .col-lg-4.col-md-4
+            .banner-product-image.mt-10
+              a href="#" 
+                = image_tag 'im-md-2-380x380.jpg', class: 'img-fluid'
+            .banner-product-image.mt-10
+              a href="#" 
+                = image_tag 'im-md-3.jpg', class: 'img-fluid'
+          .col-lg-4
+            .banner-product-image.mt-10
+              a href="#" 
+                = image_tag 'im-md-4-380x380.jpg', class: 'img-fluid'
+          .col-lg-8
+            .banner-product-image.mt-10
+              a href="#" 
+                = image_tag 'im-md-5-780x380.jpg', class: 'img-fluid'

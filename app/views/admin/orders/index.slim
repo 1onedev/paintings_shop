@@ -1,0 +1,54 @@
+nav.pb-3.mb-3 aria-label="breadcrumb" 
+  ol.breadcrumb
+    li.breadcrumb-item
+      = link_to 'Головна', admin_root_path
+    li.breadcrumb-item.active aria-current="page" Замовлення
+
+- if @orders.present?
+  .row
+    .col-lg-12
+      .pb-3.mb-3
+        .bg-white.rounded-xl.shadow-sm.px-4.py-5.p-md-5
+          .header-with-action.d-flex.justify-content-between.align-items-center
+            .header-name-page
+              h5.font-weight-700.section-title-4.text-left.pb-2.mb-4 
+                |Замовлення
+                .title-divider-round.mt-3
+          .row
+            .col-12
+              table.table.table-striped
+                thead
+                  tr
+                    th scope="col" #
+                    th scope="col" Дата
+                    th scope="col" Ім'я замовника
+                    th scope="col" К-сть картин
+                    th scope="col" Сумма
+                    th scope="col" 
+                tbody
+                  - @orders.each do |order|
+                    tr
+                      th.align-middle = order.number_with_sign
+                      td.align-middle = order.created_at.try(:strftime, '%d.%m.%Y')
+                      td.align-middle 
+                        - if order.receiver_name.present?
+                          = [order.receiver_surname, order.receiver_name].join(' ')
+                        - else
+                          = [order.surname, order.name].join(' ')
+                      td.align-middle = [order.order_items.count, 'шт'].join(' ')
+                      td.align-middle = price_format order.order_items.sum(&:price)
+                      td.align-middle 
+                        = link_to admin_order_path(order)
+                          i.bx.bx-show
+                        = link_to [:admin, order],  method: :delete, data: { confirm: 'Удалить?' }
+                          i.bx.bx-trash-alt.ml-3
+              
+            .col-12.d-flex.justify-content-center
+              = paginate @orders
+
+- else
+  .row
+    .col-lg-12
+      .pb-3.mb-3
+        .bg-white.rounded-xl.shadow-sm.px-4.py-5.p-md-5
+          .no-date.d-flex.justify-content-center Дані відсутні

@@ -1,0 +1,69 @@
+.breadcrumb-area.section-space--pt_120
+      .container
+        .row
+          .col-12
+            .row.breadcrumb_box.align-items-center
+              .col-lg-6.col-md-6.col-sm-6.text-center.text-sm-left
+                h2.breadcrumb-title = t :payment
+              .col-lg-6.col-md-6.col-sm-6
+                ul.breadcrumb-list.text-center.text-sm-right
+                  li.breadcrumb-item
+                    = link_to "#{t 'home_page'}", root_path
+                  li.breadcrumb-item.active = t :payment
+
+.site-wrapper-reveal.border-bottom
+  .container.section-space--ptb_120
+    .row
+      .col-lg-6.offset-3
+        .your-order-wrappwer.tablet-mt__60.small-mt__60
+          .your-order-area
+            .your-order-wrap.gray-bg-4
+              .your-order-info-wrap
+                .your-main-order-info
+                  ul
+                    li.d-flex.justify-content-between
+                      div
+                        = @order.number_with_sign
+                      div
+                        = @order.created_at.try(:strftime, '%d.%m.%Y')
+                .your-order-info
+                  ul
+                    li.d-flex.justify-content-between
+                      strong = t :item_name
+                      strong = t :final_price
+                .your-order-middle
+                  ul
+                    - @order.order_items.each do |order_item|
+                      li
+                        => order_item.item.name
+                        |(x 1)
+                        span = price_format order_item.item.price
+                .your-order-info.order-total
+                  ul
+                    li
+                      strong = t :total
+                      span = price_format(cart_items.sum(&:price).to_i)
+                .order-user-info
+                  ul
+                    li.d-flex.justify-content-between.pb-2
+                      strong = t :name
+                      span = [@order.surname, @order.name].join(' ')
+                    li.d-flex.justify-content-between.pb-2
+                      strong = t :email
+                      span = @order.email
+                    li.d-flex.justify-content-between.pb-2
+                      strong = t :phone
+                      span = @order.phone
+                    li.d-flex.justify-content-between.pb-2
+                      strong = t :locality
+                      span = @order.locality
+                    li.d-flex.justify-content-between.pb-2
+                      strong = t :delivery_service
+                      span = [@order.delivery_service, @order.delivery_type].join(', ')
+                    li
+                      strong = t :delivery_comment
+                    li
+                      span = @order.delivery_comment
+        #formButton.btn.btn--full.btn--black.btn--lg.text-center.mt-5 
+          = t :pay
+          = @liqpay_form.html_safe

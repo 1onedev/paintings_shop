@@ -1,0 +1,105 @@
+.site-wrapper-reveal.section-space--pt_90
+  - if @sliders.present?
+    .hero-box-area
+      .container
+        .row
+          - @sliders.each do |slider|
+            .col-lg-12
+              .hero-area.hero-slider-7
+                .single-hero-slider-7.bg-img data-bg="#{image_path slider.image.url(:lg)}" 
+                  .container
+                    .row
+                      .col-lg-12.slider-shadow
+                        .hero-content-wrap
+                          .hero-text-7.mt-lg-5
+                            h6.mb-20.color-white-80
+                              = slider.text_1
+                            h1.color-white
+                              = slider.text_2
+                            - if slider.button_title.present?
+                              .button-box.mt-30
+                                = link_to slider.button_title, slider.button_url, class: 'hero-btn-one btn'
+
+            
+  .about-us-area.section-space--pt_120
+    .container
+      .row
+        .col-lg-12
+          .about-us-content_6.text-center
+            h2 Pray for Ukraine
+            p
+              |Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        .col-8.col-lg-2.offset-lg-5.offset-2.mt-4
+          = link_to "#{t 'to_help'}", root_path, class: 'btn btn--full btn--border_1'
+          
+
+  .product-wrapper.section-space--ptb_120
+    .container
+      .row.align-items-center
+        .col-lg-4
+          .section-title.text-lg-left.text-center.mb-20
+            h3.section-title = t :paintings_page
+        .col-lg-8
+          ul.nav.product-tab-menu.justify-content-lg-end.justify-content-center role="tablist"
+            li.tab__item.nav-item.active
+              = link_to "#{t 'all_paintings'}", item_categories_path, class: 'nav-link'
+            - @item_categories.each do |item_category|
+              li.tab__item.nav-item
+                = link_to item_category.name, item_category_path(item_category), class: 'nav-link'
+      .row
+        - @items.each do |item|
+          .col-lg-3.col-md-4.col-sm-6
+            .single-product-item.text-center
+              .products-images
+                = link_to item_category_item_path(item_category_id: item.item_category.id, id: item.id), class: 'product-thumbnail'
+                  = image_tag item.images.first.file.url(:lg), class: 'img-fluid', alt: item.name
+                  = availabilities_tag(item)
+                .product-actions
+                  - unless item.sold?
+                    = link_to ajax_cart_url(item: item), remote: true, method: :post
+                      i.p-icon.icon-bag2
+                  = link_to ajax_favorites_url(favorite: item), remote: true, method: :post
+                    i.p-icon.icon-heart
+              .product-content
+                h6.prodect-title
+                  = link_to item.name, item_category_item_path(item_category_id: item.item_category.id, id: item.id)
+                .prodect-price.mb-2
+                  span.material-name = item.item_material.name
+                .prodect-price
+                  span.new-price = price_format(item.price)
+        .col-12
+          = paginate @items, theme: 'my_custom_theme'
+         
+
+  - if @partners.present?
+    .our-brand-area.section-space--pb_90
+      .container
+        .row.brand-slider-active
+          - @partners.each do |partner|
+            .col-lg-12
+              .single-brand-item
+                = link_to partner.link
+                  = image_tag partner.image.url(:xs), class: 'img-fluid', alt: partner.name
+
+  .our-newsletter-area
+    .container
+      .row
+        .col-lg-12
+          .newsletter--box
+            .row.align-items-center
+              .col-lg-5.col-md-4
+                .section-title.small-mb__40.tablet-mb__40
+                  h4.section-title = t :subscribe
+                  p = t :subscribe_text
+              .col-lg-7.col-md-8
+                .newsletter-wrap
+                  = form_for Feedback.new, remote: true, html: { id: 'new_feedback', class: 'newsletter--two' } do |f| 
+                    = f.email_field :email, class: 'input-box', placeholder: "#{t 'enter_your_email'}"
+                    = f.button nil, class: 'submit-btn'
+                      i.icon-arrow-right
+

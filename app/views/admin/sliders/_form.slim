@@ -1,0 +1,104 @@
+= form_for [:admin, @slider] do |f|
+  = f.file_field :image, style: 'overflow: hidden;display:none;', id: 'resource_cover'
+  .row
+    .col-lg-12
+      .pb-3.mb-3
+        .bg-white.rounded-xl.shadow-sm.px-4.py-5.p-md-5
+          .header-with-action.d-flex.justify-content-between.align-items-center
+            .header-name-page
+              h5.font-weight-700.section-title-4.text-left.pb-2.mb-4 
+                |Оновна інформація
+                .title-divider-round.mt-3
+          .row
+            .col-12
+              .form-row
+                .col-md-7.d-flex.align-items-center.mb-3.mb-md-0
+                  .pr-4.pr-md-5
+                    h6.font-weight-700 Основне зображення
+                    p.mb-0 
+                      |Додайте зображення, яка буде основним для новини
+                      br 
+                      |Щоб завантажити натисніть на зображення
+                      br 
+                      |Розміри картинки: 880x580px
+                      br 
+                      |Макс. вага файлу: 5Mb 
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Основне зображення
+                      .input-group-inner
+                        a.cover_picker#cover_button
+                          - if @slider.image.exists?
+                            = image_tag @slider.image.url(:sm), class: 'img-responsive img-admin', width: '300px'
+                          - else
+                            = image_tag 'placeholder.jpg', class: 'img-responsive img-admin', width: '300px'
+                .col-md-7.d-flex.align-items-center.mb-3.mb-md-0
+                  .pr-4.pr-md-5
+                    h6.font-weight-700 Верхній текст
+                    p.mb-0 
+                      |Введіть верхній текст слайду
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Верхній текст на українській
+                      .input-group-inner
+                        = f.text_field :text_1, class: 'form-control form-control-lg', placeholder: "Верхній текст на українській", required: "required"
+                .col-md-7
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Верхній текст на англійській
+                      .input-group-inner
+                        = f.text_field :text_1_en, class: 'form-control form-control-lg', placeholder: "Верхній текст на англійській"
+                .col-md-7.d-flex.align-items-center.mb-3.mb-md-0
+                  .pr-4.pr-md-5
+                    h6.font-weight-700 Нижній текст
+                    p.mb-0 
+                      |Введіть нижній текст слайду
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Нижній текст на українській
+                      .input-group-inner
+                        = f.text_field :text_2, class: 'form-control form-control-lg', placeholder: "Нижній текст на українській", required: "required"
+                .col-md-7
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Нижній текст на англійській
+                      .input-group-inner
+                        = f.text_field :text_2_en, class: 'form-control form-control-lg', placeholder: "Нижній текст на англійській"
+                .col-md-7.d-flex.align-items-center.mb-3.mb-md-0
+                  .pr-4.pr-md-5
+                    h6.font-weight-700 Текст кнопки
+                    p.mb-0 
+                      |Введіть текст кнопки слайду
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Текст кнопки на українській
+                      .input-group-inner
+                        = f.text_field :button_title, class: 'form-control form-control-lg', placeholder: "Текст кнопки на українській"
+                .col-md-7
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Текст кнопки на англійській
+                      .input-group-inner
+                        = f.text_field :button_title_en, class: 'form-control form-control-lg', placeholder: "Текст кнопки на англійській"
+                .col-md-7.d-flex.align-items-center.mb-3.mb-md-0
+                  .pr-4.pr-md-5
+                    h6.font-weight-700 Посилання кнопки
+                    p.mb-0 
+                      |Введіть посилання кнопки слайду
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Посилання кнопки
+                      .input-group-inner
+                        = f.text_field :button_url, class: 'form-control form-control-lg', placeholder: "Посилання кнопки"
+                
+                .col-12.d-flex.align-items-center.justify-content-center.mt-3
+                  = link_to 'Відмінити', admin_sliders_path, class: 'btn btn-lg btn-round btn-outline-primary m-0 mr-3'
+                  = f.submit 'Зберегти', class: 'btn btn-lg btn-round btn-primary m-0'

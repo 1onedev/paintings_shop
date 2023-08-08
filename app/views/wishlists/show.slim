@@ -1,0 +1,53 @@
+.breadcrumb-area.section-space--pt_120
+  .container
+    .row
+      .col-12
+        .row.breadcrumb_box.align-items-center
+          .col-lg-6.col-md-6.col-sm-6.text-center.text-sm-left
+            h2.breadcrumb-title = t :wishlist_page
+          .col-lg-6.col-md-6.col-sm-6
+            ul.breadcrumb-list.text-center.text-sm-right
+              li.breadcrumb-item
+                = link_to "#{t 'home_page'}", root_path
+              li.breadcrumb-item.active = t :wishlist_page
+
+.site-wrapper-reveal.border-bottom
+  .wishlist-main-area.section-space--ptb_90
+    .container
+      .row
+        .col-lg-12
+          - if @items.present?
+            .table-content.table-responsive.cart-table-content
+              table
+                thead
+                  tr
+                    th
+                    th
+                    th.product-name.pl-3 = t :item_name
+                    th.product-price = t :item_price
+                    th = t :aviliability
+                    th
+                tbody
+                  - @items.each do |item|
+                    tr
+                      td.product-remove
+                        = link_to ajax_favorites_url(favorite: item), method: :delete, data: { confirm: "#{t 'delete_ques'}" }
+                          i.icon-cross2
+                      td.product-img
+                        = link_to item_category_item_path(item_category_id: item.item_category.id, id: item.id)
+                          = image_tag item.images.first.file.url(:lg), style: 'width:100px;height:auto;', alt: item.name
+                      td.product-name.pl-3
+                        = link_to item.name, item_category_item_path(item_category_id: item.item_category.id, id: item.id)
+                      td.product-price
+                        span.amount = price_format item.price
+                      td.product-stock-status
+                        - if item.sold?
+                          p.text-danger = (t 'enums.sold')
+                        - else
+                          p = (t 'enums.not_sold')
+                      td.product-wishlist-cart
+                        - unless item.sold?
+                          = link_to "#{t 'add_to_cart'}", ajax_cart_url(item: item), remote: true, method: :post
+          - else
+            .col-12.d-flex.align-items-center.justify-content-center
+              h2.m-0 = t :wishlist_nil

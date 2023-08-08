@@ -1,0 +1,19 @@
+tr id="item-#{f.object.id}"
+  = f.hidden_field :item_id, value: f.object.id
+  = f.hidden_field :id, value: nil
+  td
+  td.product-img
+    = link_to item_category_item_path(item_category_id: f.object.item_category.id, id: f.object.id)
+      = image_tag f.object.images.first.file.url(:lg), class: 'img-fluid', alt: f.object.name
+  td.product-name.pl-3
+    = link_to f.object.name, item_category_item_path(item_category_id: f.object.item_category.id, id: f.object.id)
+  td.product-price
+    span.amount = price_format(f.object.price.to_i)
+  td.cart-quality
+    .quickview-quality.quality-height-dec2
+      = count_format(1)
+  td.price-total
+    span.amount = price_format(f.object.price.to_i)
+  td.product-remove
+    = link_to ajax_cart_url(item: f.object, from_cart: true), remote: true, method: :delete, title: "#{t 'delete_ques'}", data: {:toggle => 'tooltip'}, rel: 'nofollow'
+      i.icon-cross2

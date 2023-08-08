@@ -1,0 +1,176 @@
+= form_for [:admin, @item] do |f|
+  .row
+    .col-lg-12
+      .pb-3.mb-3
+        .bg-white.rounded-xl.shadow-sm.px-4.py-5.p-md-5
+          .header-with-action.d-flex.justify-content-between.align-items-center
+            .header-name-page
+              h5.font-weight-700.section-title-4.text-left.pb-2.mb-4 
+                |Оновна інформація
+                .title-divider-round.mt-3
+          .row
+            .col-12
+              .form-row
+                .col-md-7.d-flex.align-items-center.mb-3.mb-md-0
+                  .pr-4.pr-md-5
+                    h6.font-weight-700 Назва картини
+                    p.mb-0 
+                      |Назва картини
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Назва картини на українській
+                      .input-group-inner
+                        = f.text_field :name, class: 'form-control form-control-lg', placeholder: "Назва картини на українській", required: "required"
+                .col-md-7
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Назва картини на англійській
+                      .input-group-inner
+                        = f.text_field :name_en, class: 'form-control form-control-lg', placeholder: "Назва картини на англійській"
+                .col-md-7.d-flex.align-items-center.mb-3.mb-md-0
+                  .pr-4.pr-md-5
+                    h6.font-weight-700 Опис картини
+                    p.mb-0 
+                      |Опис картини
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Опис картини на українській
+                      .input-group-inner
+                        = f.text_area :description, class: 'ckeditor'
+                .col-md-7
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Опис картини на англійській
+                      .input-group-inner
+                        = f.text_area :description_en, class: 'ckeditor'
+                .col-md-7.d-flex.align-items-center.mb-3.mb-md-0
+                  .pr-4.pr-md-5
+                    h6.font-weight-700 Ціна картини
+                    p.mb-0 
+                      |Ціна картини
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Ціна картини
+                      .input-group-inner
+                        = f.text_field :price, class: 'form-control form-control-lg', placeholder: "0", required: "required"
+
+  .row
+    .col-lg-12
+      .pb-3.mb-3
+        .bg-white.rounded-xl.shadow-sm.px-4.py-5.p-md-5
+          .header-with-action.d-flex.justify-content-between.align-items-center
+            .header-name-page
+              h5.font-weight-700.section-title-4.text-left.pb-2.mb-4 
+                |Додаткова інформація
+                .title-divider-round.mt-3
+          .row
+            .col-12
+              .form-row
+                .col-md-7.d-flex.align-items-center.mb-3.mb-md-0
+                  .pr-4.pr-md-5
+                    h6.font-weight-700 Категорія картини
+                    p.mb-0 
+                      |Категорія картини
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Категорія картини
+                      .input-group-inner
+                        = f.collection_select :item_category_id, ItemCategory.all, :id, :name, { include_blank: true, required: 'required' }, { class: 'form-control chosen-select' }
+                .col-md-7.d-flex.align-items-center.mb-3.mb-md-0
+                  .pr-4.pr-md-5
+                    h6.font-weight-700 Автор картини
+                    p.mb-0 
+                      |Оберіть автора картини
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Автор картини
+                      .input-group-inner
+                        = f.collection_select :author_id, Author.all, :id, :name, { include_blank: true, required: 'required' }, { class: 'form-control chosen-select' }
+                .col-md-7.d-flex.align-items-center.mb-3.mb-md-0
+                  .pr-4.pr-md-5
+                    h6.font-weight-700 Налаштування
+                    p.mb-0 
+                      |Налаштування для картини
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Статус картини
+                      .input-group-inner
+                        = f.select :status, Item.statuses.map {|k, v| [t("enums.#{k}"), k]}, { include_blank: false }, { class: 'form-control form-round custom-select' }
+                .col-md-7.d-flex.align-items-center.mb-3.mb-md-0
+                  .pr-4.pr-md-5
+                    h6.font-weight-700 Матеріал картини
+                    p.mb-0 
+                      |Оберіть матеріал картини
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Матеріал картини
+                      .input-group-inner
+                        = f.collection_select :item_material_id, ItemMaterial.all, :id, :name, { include_blank: false, required: 'required' }, { class: 'form-control form-round custom-select' }
+                .col-md-7
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Статус публікації
+                      .custom-control.custom-switch
+                        = f.check_box :published, class: 'custom-control-input', id: "customSwitch1"
+                        label.custom-control-label for="customSwitch1" Опублікувати
+                .col-md-7
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Коментування публікації
+                      .custom-control.custom-switch
+                        = f.check_box :commenting, class: 'custom-control-input', id: "customSwitch2"
+                        label.custom-control-label for="customSwitch2" Дозволити
+                .col-md-7
+                .col-md-5
+                  .field
+                    .input-group.input-group-lg.input-group-round.mb-4.pr-md-2
+                      label.text-uppercase Додати в промо блок
+                      .custom-control.custom-switch
+                        = f.check_box :promo, class: 'custom-control-input', id: "customSwitch3"
+                        label.custom-control-label for="customSwitch3" Додати
+
+  .row
+    .col-lg-12
+      .pb-3.mb-3
+        .bg-white.rounded-xl.shadow-sm.px-4.py-5.p-md-5
+          .header-with-action.d-flex.justify-content-between.align-items-center
+            .header-name-page
+              h5.font-weight-700.section-title-4.text-left.pb-2.mb-4 
+                |Схожі картини
+                .title-divider-round.mt-3
+          .row
+            .col-12
+              .form-row
+                .col-md-7.d-flex.align-items-center.mb-3.mb-md-0
+                  .pr-4.pr-md-5
+                    h6.font-weight-700 Схожі картини
+                    p.mb-0 
+                      |Оберіть картини
+                .col-md-5
+                  #similar_items
+                    = f.fields_for :similar_items do |similar_item|
+                      = render 'similar_item_fields', f: similar_item
+                    .col-12.d-flex.justify-content-center.align-items-center.py-3
+                      = link_to_add_association f, :similar_items, class: 'btn btn-lg btn-round btn-primary m-0'
+                        i.fal.fa-plus
+                        |Додати картину
+
+
+                
+                
+  .row
+    .col-12.d-flex.align-items-center.justify-content-center.mt-3
+      = link_to 'Відмінити', admin_items_path, class: 'btn btn-lg btn-round btn-outline-primary m-0 mr-3'
+      = f.submit 'Зберегти', class: 'btn btn-lg btn-round btn-primary m-0'
+  
